@@ -73,19 +73,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="AdministrationPage.xaml.cs">
+	    <DependentUpon>AdministrationPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="TaskListPage.xaml.cs">
 	    <DependentUpon>TaskListPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="SettingsPage.xaml.cs">
-	    <DependentUpon>SettingsPage.xaml</DependentUpon>
+	  <Compile Update="ProfilePage.xaml.cs">
+	    <DependentUpon>ProfilePage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="AdministrationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="TaskListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SettingsPage.xaml">
+	  <MauiXaml Update="ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

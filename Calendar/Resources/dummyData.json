@@ -31,6 +31,14 @@
       "dueDate": "2024-11-10T10:00:00Z",
       "subjectId": 1,
       "groupId": 2
+    },
+    {
+      "id": 5,
+      "name": "Final Assigment",
+      "description": "blabla.",
+      "dueDate": "2024-11-10T10:00:00Z",
+      "subjectId": 1,
+      "groupId": 2
     }
   ],
   "subjects": [

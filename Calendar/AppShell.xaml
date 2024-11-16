@@ -30,8 +30,11 @@
     <FlyoutItem Title="Task List">
         <ShellContent ContentTemplate="{DataTemplate local:TaskListPage}" />
     </FlyoutItem>
+    <FlyoutItem Title="Administration">
+        <ShellContent ContentTemplate="{DataTemplate local:AdministrationPage}" />
+    </FlyoutItem>
     <FlyoutItem Title="Settings">
-        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" />
     </FlyoutItem>
 
 </Shell>

@@ -25,40 +25,7 @@ namespace Calendar
 
         private void LoadEvents()
         {
-            string json = string.Empty;
-            #if ANDROID
-            try
-            {
-                using var stream = FileSystem.OpenAppPackageFileAsync("dummyData.json").Result;
-                using var reader = new StreamReader(stream);
-                json = reader.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading file from MauiAsset: {ex.Message}");
-                return;
-            }
-            #else
-            // Fallback for other platforms (if necessary)
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "dummyData.json");
-            if (!File.Exists(filePath))
-            {
-                Console.WriteLine($"Error: The file {filePath} was not found.");
-                return;
-            }
-            json = File.ReadAllText(filePath);
-            #endif
-
-            // Deserialize the JSON and handle the data
-            if ( json !=  null )
-            { 
-                var calendarData = JsonConvert.DeserializeObject<CalendarData>(json);
-                _events = calendarData?.Events ?? new List<EventInfo>();
-                _subjects = calendarData?.Subjects ?? new List<SubjectData>();
-                _groups = calendarData?.Groups ?? new List<GroupData>();
-            
-            }
-           
+            (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
         }
 
         // Function to populate calendar days
@@ -162,7 +129,7 @@ namespace Calendar
 
                 TapGestureRecognizer tapGesture = new TapGestureRecognizer
                 {
-                    Command = new Command(() => OnDayTapped(date))
+                    Command = new Command(() => FunctionsLib.OnDayTapped(date, this))
                 };
                 dayGrid.GestureRecognizers.Add(tapGesture);
                 // Retrieve events for this day
@@ -273,10 +240,6 @@ namespace Calendar
         {
             _selectedMonth = _selectedMonth.AddMonths(1);
             UpdateCalendar(_selectedMonth);
-        }
-        private void OnDayTapped(DateTime date)
-        {
-            DisplayAlert("Date Tapped", $"You selected {date.ToShortDateString()}", "OK");
         }
     }
 }

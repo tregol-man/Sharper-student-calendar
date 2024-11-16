@@ -4,11 +4,12 @@ using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
+
 namespace Calendar
 {
-    public partial class SettingsPage : ContentPage
+    public partial class ProfilePage : ContentPage
     {
-        public SettingsPage()
+        public ProfilePage()
         {
             InitializeComponent();
         }
