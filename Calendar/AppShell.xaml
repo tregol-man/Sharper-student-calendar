@@ -19,7 +19,8 @@
     <!-- TitleView -->
     <Shell.TitleView>
         <StackLayout Orientation="Horizontal" VerticalOptions="Center">
-            <Label Text="Calendar" VerticalOptions="Center" FontSize="24" />
+            <Label Text="{Binding CurrentItem.Title, Source={RelativeSource AncestorType={x:Type Shell}}}" 
+               VerticalOptions="Center" FontSize="24" />
         </StackLayout>
     </Shell.TitleView>
 

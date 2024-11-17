@@ -7,6 +7,7 @@ namespace Calendar
         public AppShell()
         {
             InitializeComponent();
+            this.BindingContext = this;
         }
     }
 }
