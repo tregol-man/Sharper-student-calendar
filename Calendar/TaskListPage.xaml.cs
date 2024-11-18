@@ -42,15 +42,9 @@ namespace Calendar
                     },
                     Margin = new Thickness(10, 5),
                 };
-                bool skip = false;
-                // Add the date label on the left
-                if (lastEventDate != eventInfo.DueDate.Date)
-                {
-                    skip = true;
-                }
                 var dateLabel = new Label
                 {
-                    Text = skip ? eventInfo.DueDate.ToString("MM/dd/yyyy"): " ",
+                    Text = eventInfo.DueDate.ToString("MM/dd/yyyy"),
                     VerticalOptions = LayoutOptions.Center,
                     FontAttributes = FontAttributes.Bold
                 };
@@ -94,18 +88,16 @@ namespace Calendar
                 detailsGrid.Children.Add(nameLabel);
 
                 //description
-                var shortenedDescription = eventInfo.Description.Length > 100
-                    ? eventInfo.Description.Substring(0, 100) + "..."
-                    : eventInfo.Description;
-                var descriptionLabel = new Label
+                var subjectName = _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
+                var subjectLabel = new Label
                 {
-                    Text = shortenedDescription,
+                    Text = subjectName,
                     FontAttributes = FontAttributes.Italic,
                     TextColor = Colors.Gray
                 };
-                Grid.SetRow(descriptionLabel, 1);
-                Grid.SetColumn(descriptionLabel, 0);
-                detailsGrid.Children.Add(descriptionLabel);
+                Grid.SetRow(subjectLabel, 1);
+                Grid.SetColumn(subjectLabel, 0);
+                detailsGrid.Children.Add(subjectLabel);
                 Grid.SetRow(detailsGrid, 0);
                 Grid.SetColumn(detailsGrid, 1);
                 // Add the details grid to the main event grid
