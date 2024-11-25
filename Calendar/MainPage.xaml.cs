@@ -129,7 +129,7 @@ namespace Calendar
 
                 TapGestureRecognizer tapGesture = new TapGestureRecognizer
                 {
-                    Command = new Command(() => FunctionsLib.OnDayTapped(date, this))
+                    Command = new Command(() => FunctionsLib.OnDayTapped(date))
                 };
                 dayGrid.GestureRecognizers.Add(tapGesture);
                 // Retrieve events for this day

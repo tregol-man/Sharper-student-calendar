@@ -50,7 +50,7 @@ namespace Calendar
                 };
                 TapGestureRecognizer tapGestureDate = new TapGestureRecognizer
                 {
-                    Command = new Command(() => FunctionsLib.OnDayTapped(eventInfo.DueDate.Date, this))
+                    Command = new Command(() => FunctionsLib.OnDayTapped(eventInfo.DueDate.Date))
                 };
                 dateLabel.GestureRecognizers.Add(tapGestureDate);
                 Grid.SetRow(dateLabel, 0);

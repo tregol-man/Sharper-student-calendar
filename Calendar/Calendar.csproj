@@ -73,6 +73,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="DatePage.xaml.cs">
+	    <DependentUpon>DatePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="EventPage.xaml.cs">
 	    <DependentUpon>EventPage.xaml</DependentUpon>
 	  </Compile>
@@ -85,6 +88,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="DatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="EventPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

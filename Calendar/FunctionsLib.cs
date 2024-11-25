@@ -5,7 +5,9 @@ using System.IO;
 using Calendar;
 using Microsoft.Maui.Controls;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 public static class FunctionsLib
+
 {
     public static (List<Calendar.EventInfo> Events, List<SubjectData> Subjects, List<GroupData> Groups) LoadEvents()
     {
@@ -46,9 +48,10 @@ public static class FunctionsLib
 
         return (new List<Calendar.EventInfo>(), new List<SubjectData>(), new List<GroupData>());
     }
-    public static void OnDayTapped(DateTime date, Page page)
+    public static void OnDayTapped(DateTime date)
     {
-        page.DisplayAlert("Date Tapped", $"You selected {date.ToShortDateString()}", "OK");
+        var formattedDate = date.ToString("yyyy-MM-dd");
+        Shell.Current.GoToAsync($"datepage?date={formattedDate}");
     }
     public static void OnEventTapped(int eventId)
     {
