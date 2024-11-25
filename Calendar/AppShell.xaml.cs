@@ -8,6 +8,7 @@ namespace Calendar
         {
             InitializeComponent();
             this.BindingContext = this;
+            Routing.RegisterRoute("eventpage", typeof(EventPage));
         }
     }
 }

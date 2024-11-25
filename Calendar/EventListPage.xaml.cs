@@ -7,9 +7,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Calendar
 {
-    public partial class TaskListPage : ContentPage
+    public partial class EventListPage : ContentPage
     {
-        public TaskListPage()
+        public EventListPage()
         {
             InitializeComponent();
             LoadEvents();
@@ -73,7 +73,7 @@ namespace Calendar
                 };
                 TapGestureRecognizer tapGestureEvent = new TapGestureRecognizer
                 {
-                    Command = new Command(() => FunctionsLib.OnEventTapped(eventInfo.Name, this))
+                    Command = new Command(() => FunctionsLib.OnEventTapped(eventInfo.Id))
                 };
                 detailsGrid.GestureRecognizers.Add(tapGestureEvent);
                 //event name

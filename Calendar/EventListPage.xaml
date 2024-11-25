@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Calendar.TaskListPage"
-             Title="TaskList">
+             x:Class="Calendar.EventListPage"
+             Title="EventList">
     <ScrollView>
         <VerticalStackLayout x:Name="MainLayout"  Padding="20" Spacing="15">
-            <Label Text="Tasklist" FontSize="24" FontAttributes="Bold" />
+            <Label Text="Eventlist" FontSize="24" FontAttributes="Bold" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

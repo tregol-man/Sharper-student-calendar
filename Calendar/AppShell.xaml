@@ -8,8 +8,8 @@
     Title="Calendar"
     Shell.ForegroundColor="Purple"
     Shell.BackgroundColor="White">
-
     <!-- Flyout Header -->
+    
     <Shell.FlyoutHeader>
         <StackLayout BackgroundColor="LightGray" Padding="10">
             <Label Text="Menu" FontAttributes="Bold" FontSize="18" />
@@ -23,16 +23,15 @@
                VerticalOptions="Center" FontSize="24" />
         </StackLayout>
     </Shell.TitleView>
-
+    
     <!-- Flyout Items -->
     <FlyoutItem Title="Calendar" >
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Task List">
-        <ShellContent ContentTemplate="{DataTemplate local:TaskListPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:EventListPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Settings">
         <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" />
     </FlyoutItem>
-
 </Shell>
