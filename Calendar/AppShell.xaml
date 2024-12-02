@@ -28,7 +28,7 @@
     <FlyoutItem Title="Calendar" >
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Task List">
+    <FlyoutItem Title="Event List">
         <ShellContent ContentTemplate="{DataTemplate local:EventListPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Settings">

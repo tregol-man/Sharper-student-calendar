@@ -23,16 +23,49 @@ namespace Calendar
         {
             (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
         }
-        private void PopulateEventGrid()
+        private void PopulateEventGrid(bool sortByDate = true)
         {
-            // Sort events by date
-            var sortedEvents = _events.OrderBy(e => e.DueDate).ToList();
+            DynamicContent.Children.Clear();
+            IEnumerable<EventInfo> sortedEvents;
+
+            if (sortByDate)
+            {
+                // Sort events by date
+                sortedEvents = _events.OrderBy(e => e.DueDate);
+            }
+            else
+            {
+                // Sort events by subject name
+                sortedEvents = _events
+                    .OrderBy(e => _subjects.FirstOrDefault(s => s.Id == e.SubjectId)?.Name ?? "Unknown Subject")
+                    .ThenBy(e => e.Name);
+            }
             DateTime? lastEventDate = null;
+            string lastHeader = null;
             bool useBlueBackground = true;
 
             foreach (var eventInfo in sortedEvents)
             {
-                // Create a new grid for the event
+                string currentHeader = sortByDate
+                ? eventInfo.DueDate.ToString("MMMM yyyy") // Month and year for date sorting
+                : _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
+
+                if (currentHeader != lastHeader)
+                {
+                    lastHeader = currentHeader;
+
+                    var headerLabel = new Label
+                    {
+                        Text = currentHeader,
+                        FontSize = 20,
+                        FontAttributes = FontAttributes.Bold,
+                        Margin = new Thickness(10, 10, 10, 5),
+                        TextColor = Colors.DarkBlue
+                    };
+
+                    DynamicContent.Children.Add(headerLabel);
+                }
+
                 var eventGrid = new Grid
                 {
                     ColumnDefinitions =
@@ -104,8 +137,17 @@ namespace Calendar
                 eventGrid.Children.Add(detailsGrid);
 
                 // Add the event grid to the main layout
-                MainLayout.Children.Add(eventGrid);
+                DynamicContent.Children.Add(eventGrid);
             }
+        }
+        private void OnDateSortClicked(object sender, EventArgs e)
+        {
+            PopulateEventGrid(sortByDate: true); // Sort by date
+        }
+
+        private void OnEventSortClicked(object sender, EventArgs e)
+        {
+            PopulateEventGrid(sortByDate: false); // Sort by subject
         }
     }
 }

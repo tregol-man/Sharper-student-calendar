@@ -2,10 +2,19 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.EventListPage"
-             Title="EventList">
+             Title="Event List">
     <ScrollView>
-        <VerticalStackLayout x:Name="MainLayout"  Padding="20" Spacing="15">
-            <Label Text="Eventlist" FontSize="24" FontAttributes="Bold" />
+        <VerticalStackLayout x:Name="MainLayout" Padding="20" Spacing="15">
+            <!-- Static Content -->
+            <HorizontalStackLayout Spacing="10">
+                <Label x:Name="SortByLabel" FontSize="24" HorizontalOptions="Center" Text="Sort by:" />
+                <Button x:Name="DateSort" Text="Date" Clicked="OnDateSortClicked" />
+                <Button x:Name="EventSort" Text="Subjects" Clicked="OnEventSortClicked" />
+            </HorizontalStackLayout>
+            <Label Text="Event list" FontSize="24" FontAttributes="Bold" />
+
+            <!-- Placeholder for dynamic content -->
+            <VerticalStackLayout x:Name="DynamicContent" Spacing="15" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
