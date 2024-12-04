@@ -46,52 +46,38 @@ namespace Calendar
 
                 // Calculate previous month
                 DateTime previousMonth = month.AddMonths(-1);
-                int daysInPreviousMonth = DateTime.DaysInMonth(previousMonth.Year, previousMonth.Month) + 1;
+                int daysInPreviousMonth = DateTime.DaysInMonth(previousMonth.Year, previousMonth.Month);
 
-                // Start filling days from the previous month to complete the start of the grid
-                int day = daysInPreviousMonth - startDayOfWeek;
-                int rowIndex = 0;
-                int colIndex = 0;
+                // Calculate the first date to show
+                int firstDayToShow = daysInPreviousMonth - startDayOfWeek + 1;
+                DateTime firstDate = new DateTime(previousMonth.Year, previousMonth.Month, firstDayToShow);
+                int totalDaysToShow = 42;
+                DateTime lastDate = firstDate.AddDays(totalDaysToShow - 1);
 
-                // Fill previous month's days
-                for (; colIndex < startDayOfWeek; colIndex++)
+                Debug.WriteLine($"First date shown: {firstDate.ToShortDateString()}");
+                Debug.WriteLine($"Last date shown: {lastDate.ToShortDateString()}");
+
+                // Start filling days from the previous month
+                DateTime currentDate = firstDate;
+                for (int rowIndex = 0; rowIndex < 6; rowIndex++)
                 {
-                    AddDayToGrid(day++, rowIndex, colIndex, true, previousMonth); // Previous month days
-                }
-
-                // Fill current month's days
-                day = 1;
-                for (; day <= daysInMonth; day++)
-                {
-                    if (colIndex >= 7)
+                    for (int colIndex = 0; colIndex < 7; colIndex++)
                     {
-                        colIndex = 0;
-                        rowIndex++;
+                        bool isDifferentMonth = currentDate.Month != month.Month;
+                        AddDayToGrid(currentDate.Day, rowIndex, colIndex, isDifferentMonth, currentDate);
+                        currentDate = currentDate.AddDays(1);
                     }
-                    AddDayToGrid(day, rowIndex, colIndex, false, month); // Current month days
-                    colIndex++;
                 }
 
-                // Fill the remaining cells with the next month's days
-                DateTime nextMonth = month.AddMonths(1);
-                day = 1;
-                for (; rowIndex <= 5; rowIndex++)
-                {
-                    for (; colIndex < 7; colIndex++)
-                    {
-                        AddDayToGrid(day++, rowIndex, colIndex, true, nextMonth); // Next month days
-                    }
-                    colIndex = 0;
-                }
                 LeftArrowButton.IsVisible = month.Month != DateTime.Now.Month || month.Year != DateTime.Now.Year;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error: {ex.Message}");
-                // Optionally log the stack trace or inner exception
                 Debug.WriteLine(ex.StackTrace);
             }
         }
+
 
         // Helper method to add a label to the grid
 
