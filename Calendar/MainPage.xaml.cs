@@ -104,7 +104,9 @@ namespace Calendar
                 {
                     Text = day.ToString(),
                     FontSize = 24, // Larger font size for the day number
+                    FontFamily = "Inter",
                     BackgroundColor = isToday ? Colors.LightBlue : Colors.Transparent,
+                    TextColor = Colors.White,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center
                 };
@@ -128,7 +130,8 @@ namespace Calendar
                     {
                         Text = eventsForDay[0].Name.Length > 10 ? eventsForDay[0].Name.Substring(0, 10) + "..." : eventsForDay[0].Name,
                         FontSize = 12, // Smaller font size for events
-                        BackgroundColor = Colors.LightBlue,
+                        FontFamily = "Inter",
+                        BackgroundColor = Colors.White,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Center,
                     };
@@ -141,7 +144,8 @@ namespace Calendar
                         {
                             Text = eventsForDay[1].Name.Length > 10 ? eventsForDay[1].Name.Substring(0, 10) + "..." : eventsForDay[1].Name,
                             FontSize = 12,
-                            BackgroundColor = Colors.LightGreen,
+                            FontFamily = "Inter",
+                            BackgroundColor = Colors.LightBlue,
                             HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Center,
                         };
@@ -153,6 +157,7 @@ namespace Calendar
                         Label moreLabel = new Label
                         {
                             Text = $"+{eventsForDay.Count - 1} more",
+                            FontFamily = "Inter",
                             FontSize = 12,
                             BackgroundColor = Colors.LightPink,
                             HorizontalTextAlignment = TextAlignment.Center,
