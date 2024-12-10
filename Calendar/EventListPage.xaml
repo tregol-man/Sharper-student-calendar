@@ -3,6 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.EventListPage"
              Title="Event List">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+                      Offset="0" />
+            <GradientStop Color="#8587DE"
+                      Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
     <ScrollView>
         <VerticalStackLayout x:Name="MainLayout" Padding="20" Spacing="15">
             <!-- Static Content -->
