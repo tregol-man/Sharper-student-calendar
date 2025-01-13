@@ -1,4 +1,8 @@
+using System.Drawing;
+using System.Net;
+using Android.Graphics;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Shapes;
 using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -67,7 +71,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
 
                             var detailsGrid = new Grid
                             {
-                                BackgroundColor = useBlueBackground ? Colors.LightBlue : Colors.LightGreen,
+                                BackgroundColor = Colors.Transparent /*useBlueBackground ? Colors.LightBlue : Colors.LightGreen*/,
                                 RowDefinitions =
                                 {
                                     new RowDefinition { Height = GridLength.Auto },
@@ -89,11 +93,35 @@ public partial class DatePage : ContentPage, IQueryAttributable
                             {
                                 Text = eventInfo.Name,
                                 FontAttributes = FontAttributes.Bold,
-                                Margin = new Thickness(0, 0, 0, 2)
+                                Margin = new Thickness(10, 5, 0, 5),
+                                FontFamily = "Inter",
+                                FontSize = 18,
+                                TextColor = Colors.White
                             };
                             Grid.SetRow(nameLabel, 0);
                             Grid.SetColumn(nameLabel, 0);
                             detailsGrid.Children.Add(nameLabel);
+
+                            // Event border, for the edges and the gradient
+
+                            Border borderGrid = new Border
+                            {
+                                StrokeThickness = 15,
+                                Stroke = Colors.Transparent,
+                                StrokeShape = new RoundRectangle
+                                {
+                                    CornerRadius = 15
+                                },
+                                Background = new LinearGradientBrush
+                                {
+                                    EndPoint = new Microsoft.Maui.Graphics.Point(1, 0),
+                                    GradientStops = new GradientStopCollection
+                                    {
+                                        new GradientStop { Color = Microsoft.Maui.Graphics.Color.FromArgb("#5E52A0"), Offset = 0},
+                                        new GradientStop { Color = Microsoft.Maui.Graphics.Color.FromArgb("#8E80DE"), Offset = 1}
+                                    }
+                                }
+                            };
 
                             // Event subject
                             var subjectName = _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
@@ -101,14 +129,18 @@ public partial class DatePage : ContentPage, IQueryAttributable
                             {
                                 Text = subjectName,
                                 FontAttributes = FontAttributes.Italic,
-                                TextColor = Colors.Gray
+                                Margin = new Thickness(10, 0, 0, 10),
+                                FontFamily = "Inter",
+                                TextColor = Colors.White
                             };
                             Grid.SetRow(subjectLabel, 1);
                             Grid.SetColumn(subjectLabel, 0);
                             detailsGrid.Children.Add(subjectLabel);
 
                             // Add details grid to the main event grid
-                            eventGrid.Children.Add(detailsGrid);
+                            borderGrid.Content = detailsGrid;
+
+                            eventGrid.Children.Add(borderGrid);
 
                             // Add the event grid to the main layout
                             EventsStackLayout.Children.Add(eventGrid);

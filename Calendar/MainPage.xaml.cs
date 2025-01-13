@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
@@ -22,16 +22,9 @@ namespace Calendar
         private List<SubjectData> _subjects;
         private List<GroupData> _groups;
 
-        private void LoadMonthEvents(DateTime first, DateTime last)
+        private void LoadEvents()
         {
-            try
-            {
-                _events = FunctionsLib.LoadMonthEvents(first, last, 1) ?? new List<EventInfo>();
-            }
-            catch (Exception ex)
-            {
-                _events = new List<EventInfo>(); // Fallback to an empty list
-            }
+            (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
         }
 
         // Function to populate calendar days
@@ -59,7 +52,9 @@ namespace Calendar
                 DateTime firstDate = new DateTime(previousMonth.Year, previousMonth.Month, firstDayToShow);
                 int totalDaysToShow = 42;
                 DateTime lastDate = firstDate.AddDays(totalDaysToShow - 1);
-                LoadMonthEvents(firstDate, lastDate);
+
+                Debug.WriteLine($"First date shown: {firstDate.ToShortDateString()}");
+                Debug.WriteLine($"Last date shown: {lastDate.ToShortDateString()}");
 
                 // Start filling days from the previous month
                 DateTime currentDate = firstDate;
@@ -100,7 +95,7 @@ namespace Calendar
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }, // Event 1
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }, // Event 2 or "Plus X more"
                 },
-                    BackgroundColor = isAdjacentMonth ? Color.FromRgba("#5e608c") : Colors.Transparent
+                    BackgroundColor = /*isAdjacentMonth ? Color.FromRgba("#5e608c") :*/ Colors.Transparent
                 };
 
                 // Create the day label with larger font size
@@ -110,7 +105,7 @@ namespace Calendar
                     FontSize = 24, // Larger font size for the day number
                     FontFamily = "Inter",
                     BackgroundColor = isToday ? Colors.LightBlue : Colors.Transparent,
-                    TextColor = Colors.White,
+                    TextColor = isAdjacentMonth ? Colors.Grey : Colors.White,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center
                 };

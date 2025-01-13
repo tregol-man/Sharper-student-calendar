@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.MainPage">
@@ -6,9 +6,9 @@
 
         <LinearGradientBrush EndPoint="0,1">
             <GradientStop Color="white"
-                  Offset="0" />
+                          Offset="0" />
             <GradientStop Color="#8587DE"
-                  Offset="1" />
+                          Offset="1" />
         </LinearGradientBrush>
 
     </ContentPage.Background>

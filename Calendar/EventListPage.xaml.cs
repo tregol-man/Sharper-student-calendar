@@ -1,9 +1,10 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Calendar
 {
@@ -62,16 +63,27 @@ namespace Calendar
                 {
                     lastHeader = currentHeader;
 
+                    Border headerBorder = new Border
+                    {
+                        BackgroundColor = Colors.White,
+                        StrokeShape = new RoundRectangle
+                        {
+                            CornerRadius = 15
+                        }
+                    };
+
                     var headerLabel = new Label
                     {
                         Text = currentHeader,
                         FontSize = 20,
                         FontAttributes = FontAttributes.Bold,
-                        Margin = new Thickness(10, 10, 10, 5),
-                        TextColor = Colors.DarkBlue
+                        HorizontalOptions = LayoutOptions.Center,
+                        TextColor = Color.FromRgba("#4F5171")
                     };
 
-                    DynamicContent.Children.Add(headerLabel);
+                    headerBorder.Content = headerLabel;
+
+                    DynamicContent.Children.Add(headerBorder);
                 }
 
                 var eventGrid = new Grid
@@ -87,7 +99,9 @@ namespace Calendar
                 {
                     Text = eventInfo.DueDate.ToString("MM/dd/yyyy"),
                     VerticalOptions = LayoutOptions.Center,
-                    FontAttributes = FontAttributes.Bold
+                    FontAttributes = FontAttributes.Bold,
+                    FontFamily = "Inter",
+                    TextColor = Color.FromRgba("#4F5171")
                 };
                 TapGestureRecognizer tapGestureDate = new TapGestureRecognizer
                 {
@@ -103,7 +117,7 @@ namespace Calendar
 
                 var detailsGrid = new Grid
                 {
-                    BackgroundColor = useBlueBackground ? Colors.LightBlue : Colors.LightGreen,
+                    BackgroundColor = Colors.Transparent /*useBlueBackground ? Colors.LightBlue : Colors.LightGreen*/,
                     RowDefinitions =
                     {
                         new RowDefinition { Height = GridLength.Auto },
@@ -122,7 +136,10 @@ namespace Calendar
                 {
                     Text = eventInfo.Name,
                     FontAttributes = FontAttributes.Bold,
-                    Margin = new Thickness(0, 0, 0, 2)
+                    Margin = new Thickness(0, 0, 0, 2),
+                    FontFamily = "Inter",
+                    FontSize = 18,
+                    TextColor = Colors.White
                 };
                 Grid.SetRow(nameLabel, 0);
                 Grid.SetColumn(nameLabel, 0);
@@ -134,15 +151,42 @@ namespace Calendar
                 {
                     Text = subjectName,
                     FontAttributes = FontAttributes.Italic,
-                    TextColor = Colors.Gray
+                    Margin = new Thickness(5, 0, 0, 10),
+                    FontFamily = "Inter",
+                    TextColor = Colors.White
                 };
                 Grid.SetRow(subjectLabel, 1);
                 Grid.SetColumn(subjectLabel, 0);
                 detailsGrid.Children.Add(subjectLabel);
-                Grid.SetRow(detailsGrid, 0);
-                Grid.SetColumn(detailsGrid, 1);
+
+                // Event border, for the edges and the gradient
+
+                Border borderGrid = new Border
+                {
+                    StrokeThickness = 15,
+                    Stroke = Colors.Transparent,
+                    StrokeShape = new RoundRectangle
+                    {
+                        CornerRadius = 15
+                    },
+                    Background = new LinearGradientBrush
+                    {
+                        EndPoint = new Microsoft.Maui.Graphics.Point(1, 0),
+                        GradientStops = new GradientStopCollection
+                                    {
+                                        new GradientStop { Color = Microsoft.Maui.Graphics.Color.FromArgb("#5E52A0"), Offset = 0},
+                                        new GradientStop { Color = Microsoft.Maui.Graphics.Color.FromArgb("#8E80DE"), Offset = 1}
+                                    }
+                    }
+                };
+
                 // Add the details grid to the main event grid
-                eventGrid.Children.Add(detailsGrid);
+                borderGrid.Content = detailsGrid;
+
+                Grid.SetRow(borderGrid, 0);
+                Grid.SetColumn(borderGrid, 1);
+
+                eventGrid.Children.Add(borderGrid);
 
                 // Add the event grid to the main layout
                 DynamicContent.Children.Add(eventGrid);

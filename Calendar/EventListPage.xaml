@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.EventListPage"
@@ -15,16 +15,68 @@
     </ContentPage.Background>
     <ScrollView>
         <VerticalStackLayout x:Name="MainLayout" Padding="20" Spacing="15">
+            <Label Text="Event list" FontSize="30" FontAttributes="Bold" FontFamily="Inter"
+TextColor="#4F5171"/>
             <!-- Static Content -->
             <HorizontalStackLayout Spacing="10">
-                <Label x:Name="SortByLabel" FontSize="24" HorizontalOptions="Center" Text="Sort by:" />
-                <Button x:Name="DateSort" Text="Date" Clicked="OnDateSortClicked" />
-                <Button x:Name="EventSort" Text="Subjects" Clicked="OnEventSortClicked" />
+
+                <Label x:Name="SortByLabel" FontSize="24" HorizontalOptions="Center" Text="Sort by:" FontFamily="Inter"
+TextColor="#4F5171" Margin="0,5,0,0" />
+                <Border>
+                    
+                    <Border.Background>
+                        
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="#5E52A0"
+                                                Offset="0" />
+                            <GradientStop Color="#8E80DE"
+                                            Offset="1" />
+                        </LinearGradientBrush>
+                        
+                    </Border.Background>
+                    
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15"/>
+                    </Border.StrokeShape>
+                    
+                    <Button x:Name="DateSort" 
+                        Text="Date" 
+                        FontFamily="Inter"
+                        FontAttributes="Bold"
+                        Clicked="OnDateSortClicked"
+                        BackgroundColor="Transparent"/>
+                    
+                </Border>
+                <Border>
+
+                    <Border.Background>
+
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="#5E52A0"
+                                Offset="0" />
+                            <GradientStop Color="#8E80DE"
+                            Offset="1" />
+                        </LinearGradientBrush>
+
+                    </Border.Background>
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15"/>
+                    </Border.StrokeShape>
+
+                    <Button x:Name="EventSort"
+                            Text="Subjects"
+                            FontFamily="Inter"
+                            FontAttributes="Bold"
+                            Clicked="OnEventSortClicked"
+                            BackgroundColor="Transparent"/>
+                </Border>
+                    
             </HorizontalStackLayout>
-            <Label Text="Event list" FontSize="24" FontAttributes="Bold" />
 
             <!-- Placeholder for dynamic content -->
             <VerticalStackLayout x:Name="DynamicContent" Spacing="15" />
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
