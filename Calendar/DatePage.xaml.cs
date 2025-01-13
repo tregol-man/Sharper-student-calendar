@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Calendar;
 
@@ -8,7 +9,6 @@ public partial class DatePage : ContentPage, IQueryAttributable
     public DatePage()
     {
         InitializeComponent();
-        (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
     }
 
     private List<EventInfo> _events;
@@ -25,6 +25,14 @@ public partial class DatePage : ContentPage, IQueryAttributable
                 // Parse the date from the query parameter
                 if (DateTime.TryParseExact(dateString.ToString(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var date))
                 {
+                    try
+                    {
+                        _events = FunctionsLib.LoadDateEvents(date, 1) ?? new List<EventInfo>();
+                    }
+                    catch (Exception ex)
+                    {
+                        _events = new List<EventInfo>(); // Fallback to an empty list
+                    }
                     // Display the selected date
                     DateLabel.Text = $"Selected Date: {date.ToString("MM/dd/yyyy")}";
 

@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Calendar;
 
@@ -8,11 +9,8 @@ public partial class EventPage : ContentPage, IQueryAttributable
     public EventPage()
     {
         InitializeComponent();
-        (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
     }
-    private List<EventInfo> _events;
-    private List<SubjectData> _subjects;
-    private List<GroupData> _groups;
+    private List<SubjectData> _subjects = new List<SubjectData>();
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -22,9 +20,8 @@ public partial class EventPage : ContentPage, IQueryAttributable
             {
                 // Convert eventId to an integer
                 int eventId = Convert.ToInt32(id);
-
                 // Fetch the event from the loaded events list
-                var eventInfo = _events.FirstOrDefault(e => e.Id == eventId);
+                var eventInfo = FunctionsLib.LoadSingleEvent(1, eventId);
                 if (eventInfo == null)
                 {
                     EventNameLabel.Text = "Event not found";
@@ -50,6 +47,4 @@ public partial class EventPage : ContentPage, IQueryAttributable
             }
         }
     }
-
-
 }

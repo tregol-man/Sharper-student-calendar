@@ -16,12 +16,20 @@ namespace Calendar
             PopulateEventGrid();
         }
         private List<EventInfo> _events;
-        private List<SubjectData> _subjects;
+        private List<SubjectData> _subjects = new List<SubjectData>();
         private List<GroupData> _groups;
 
         private void LoadEvents()
         {
-            (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
+            try
+            {
+                _events = FunctionsLib.LoadAllEvents(1) ?? new List<EventInfo>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading events: {ex.Message}");
+                _events = new List<EventInfo>(); // Fallback to an empty list
+            }
         }
         private void PopulateEventGrid(bool sortByDate = true)
         {

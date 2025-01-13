@@ -14,7 +14,6 @@ namespace Calendar
             InitializeComponent();
             _currentMonth = DateTime.Now; // Set the initial month to the current month
             _selectedMonth = _currentMonth;
-            LoadEvents();
             UpdateCalendar(_selectedMonth);
         }
         private DateTime _currentMonth;
@@ -23,9 +22,16 @@ namespace Calendar
         private List<SubjectData> _subjects;
         private List<GroupData> _groups;
 
-        private void LoadEvents()
+        private void LoadMonthEvents(DateTime first, DateTime last)
         {
-            (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
+            try
+            {
+                _events = FunctionsLib.LoadMonthEvents(first, last, 1) ?? new List<EventInfo>();
+            }
+            catch (Exception ex)
+            {
+                _events = new List<EventInfo>(); // Fallback to an empty list
+            }
         }
 
         // Function to populate calendar days
@@ -53,9 +59,7 @@ namespace Calendar
                 DateTime firstDate = new DateTime(previousMonth.Year, previousMonth.Month, firstDayToShow);
                 int totalDaysToShow = 42;
                 DateTime lastDate = firstDate.AddDays(totalDaysToShow - 1);
-
-                Debug.WriteLine($"First date shown: {firstDate.ToShortDateString()}");
-                Debug.WriteLine($"Last date shown: {lastDate.ToShortDateString()}");
+                LoadMonthEvents(firstDate, lastDate);
 
                 // Start filling days from the previous month
                 DateTime currentDate = firstDate;
@@ -96,7 +100,7 @@ namespace Calendar
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }, // Event 1
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }, // Event 2 or "Plus X more"
                 },
-                    BackgroundColor = isAdjacentMonth ? Colors.LightGray : Colors.White
+                    BackgroundColor = isAdjacentMonth ? Color.FromRgba("#5e608c") : Colors.Transparent
                 };
 
                 // Create the day label with larger font size
