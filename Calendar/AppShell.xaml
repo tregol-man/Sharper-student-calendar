@@ -11,8 +11,8 @@
     <!-- Flyout Header -->
     
     <Shell.FlyoutHeader>
-        <StackLayout BackgroundColor="LightGray" Padding="10">
-            <Label Text="Menu" FontAttributes="Bold" FontSize="18" />
+        <StackLayout BackgroundColor="Transparent" Padding="10">
+            <Label Text="Menu" FontAttributes="Bold" FontSize="24" TextColor="White" FontFamily="Inter"/>
         </StackLayout>
     </Shell.FlyoutHeader>
 
@@ -20,18 +20,78 @@
     <Shell.TitleView>
         <StackLayout Orientation="Horizontal" VerticalOptions="Center">
             <Label Text="{Binding CurrentItem.Title, Source={RelativeSource AncestorType={x:Type Shell}}}" 
-               VerticalOptions="Center" FontSize="24" />
+               VerticalOptions="Center" FontSize="24" TextColor="#4F5171" FontFamily="Inter" />
         </StackLayout>
     </Shell.TitleView>
     
     <!-- Flyout Items -->
-    <FlyoutItem Title="Calendar" >
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    <Shell.FlyoutBackground>
+        <LinearGradientBrush EndPoint="1,0">
+            <GradientStop Color="#8E80DE"
+                          Offset="0"/>
+            <GradientStop Color="#5E52A0"
+                          Offset="1"/>
+        </LinearGradientBrush>
+    </Shell.FlyoutBackground>
+    
+    <FlyoutItem Title="Calendar">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
+        <Shell.ItemTemplate>
+            <DataTemplate>
+                <Grid ColumnDefinitions="0.2*,0.8*">
+                    <Image Source="cal_icon_white.png"
+                       Scale="0.75"
+                       Margin="5"
+                       HeightRequest="45" />
+                    <Label Grid.Column="1"
+                       Text="Calendar"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       FontFamily="Inter"
+                       TextColor="White"
+                       VerticalTextAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </Shell.ItemTemplate>
     </FlyoutItem>
     <FlyoutItem Title="Event List">
         <ShellContent ContentTemplate="{DataTemplate local:EventListPage}" />
+        <Shell.ItemTemplate>
+            <DataTemplate>
+                <Grid ColumnDefinitions="0.2*,0.8*">
+                    <Image Source="event_icon_white.png"
+                           Scale="0.75"
+                           Margin="5"
+                           HeightRequest="45" />
+                    <Label Grid.Column="1"
+                       Text="Event List"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       FontFamily="Inter"
+                       TextColor="White"
+                       VerticalTextAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </Shell.ItemTemplate>
     </FlyoutItem>
     <FlyoutItem Title="Settings">
         <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" />
+        <Shell.ItemTemplate>
+            <DataTemplate>
+                <Grid ColumnDefinitions="0.2*,0.8*">
+                    <Image Source="setting_icon_white.png"
+                       Scale="0.75"
+                       Margin="5"
+                       HeightRequest="45" />
+                    <Label Grid.Column="1"
+                       Text="Settings"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       FontFamily="Inter"
+                       TextColor="White"
+                       VerticalTextAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </Shell.ItemTemplate>
     </FlyoutItem>
 </Shell>

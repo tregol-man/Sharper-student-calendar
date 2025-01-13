@@ -2,10 +2,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.EventPage"
              Title="EventPage">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+                  Offset="0" />
+            <GradientStop Color="#8587DE"
+                  Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
     <StackLayout Padding="20">
-        <Label x:Name="EventNameLabel" FontSize="24" HorizontalOptions="Center" />
-        <Label x:Name="DateLabel" FontSize="18" HorizontalOptions="Center" />
-        <Label x:Name="SubjectLabel" FontSize="18" HorizontalOptions="Center" />
-        <Label x:Name="EventDetailsLabel" FontSize="18" HorizontalOptions="Center" />
+        <Label x:Name="EventNameLabel" FontSize="30" FontAttributes="Bold" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="Start" />
+        <Label x:Name="DateLabel" FontSize="18" HorizontalOptions="Start" TextColor="#4F5171" FontFamily="Inter" Margin="0,0,0,20"/>
+        <Border
+            BackgroundColor="#4F5171"
+            Stroke="#4F5171"
+            StrokeThickness="15"
+            MinimumHeightRequest="700"
+            >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
+            <StackLayout>
+                <Border
+                    Stroke="Transparent"
+                    >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15"/>
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="#5E52A0"
+                                        Offset="0" />
+                            <GradientStop Color="#8E80DE"
+                                        Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    
+                    <Label x:Name="SubjectLabel" FontSize="18" HorizontalOptions="Center" FontFamily="Inter" TextColor="White"/>
+                </Border>
+                
+                
+                <Label x:Name="EventDetailsLabel" FontSize="18" HorizontalOptions="Start" FontFamily="Inter" TextColor="White" Margin="0,10,0,0"/>
+            </StackLayout>
+        </Border>
+        
+        
     </StackLayout>
 </ContentPage>

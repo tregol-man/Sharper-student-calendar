@@ -6,47 +6,113 @@ using Calendar;
 using Microsoft.Maui.Controls;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
+using System.Diagnostics;
 public static class FunctionsLib
 
 {
-    public static (List<Calendar.EventInfo> Events, List<SubjectData> Subjects, List<GroupData> Groups) LoadEvents()
+    public static List<Calendar.EventInfo> LoadMonthEvents(DateTime first, DateTime last, int id)
     {
-        string json = string.Empty;
-
-    #if ANDROID
+        using (HttpClient client = new HttpClient())
+        {
+            int firstDaysSinceEpoch = (int)(first - new DateTime(1970, 1, 1)).TotalDays;
+            int lastDaysSinceEpoch = (int)(last - new DateTime(1970, 1, 1)).TotalDays;
+            string firstStr = firstDaysSinceEpoch.ToString();
+            string lastStr = lastDaysSinceEpoch.ToString();
+            Console.WriteLine("TEST" + firstStr + " " + lastStr);
+            string url = "https://sharperserver.onrender.com/groups/" + id + "/calendar/" + firstStr + "/" + lastStr;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+            if (responseContent != "missing valid token")
+            {
+                var responseData = JsonConvert.DeserializeObject<List<Calendar.EventInfo>>(responseContent);
+                return responseData;
+            }
+            else
+            {
+                return new List<Calendar.EventInfo>();
+            }
+        }
+    }
+    public static List<Calendar.EventInfo> LoadDateEvents(DateTime date, int id)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            int dateSinceEpoch = (int)(date - new DateTime(1970, 1, 1)).TotalDays;
+            string datetStr = dateSinceEpoch.ToString("yyyy-MM-dd");
+            string url = "https://sharperserver.onrender.com/groups/" + id + "/calendar/" + datetStr;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+            if (responseContent != "missing valid token")
+            {
+                var responseData = JsonConvert.DeserializeObject<List<Calendar.EventInfo>>(responseContent);
+                return responseData;
+            }
+            else
+            {
+                return new List<Calendar.EventInfo>();
+            }
+        }
+    }
+    public static List<Calendar.EventInfo> LoadAllEvents(int id)
+    {
         try
         {
-            using var stream = FileSystem.OpenAppPackageFileAsync("dummyData.json").Result;
-            using var reader = new StreamReader(stream);
-            json = reader.ReadToEnd();
+            using (HttpClient client = new HttpClient())
+            {
+                string url = "https://sharperserver.onrender.com/groups/" + id + "/events";
+                HttpResponseMessage response = client.GetAsync(url).Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Failed to fetch events: {response.ReasonPhrase}");
+                }
+
+                string responseContent = response.Content.ReadAsStringAsync().Result;
+
+                if (responseContent == "missing valid token")
+                {
+                    return new List<Calendar.EventInfo>();
+                }
+
+                return JsonConvert.DeserializeObject<List<Calendar.EventInfo>>(responseContent) ?? new List<Calendar.EventInfo>();
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading file from MauiAsset: {ex.Message}");
-            return (new List<Calendar.EventInfo>(), new List<SubjectData>(), new List<GroupData>());
+            Debug.WriteLine($"Error loading events: {ex.Message}");
+            return new List<Calendar.EventInfo>(); // Fallback to an empty list
         }
-    #else
-        // Fallback for other platforms (if necessary)
-        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "dummyData.json");
-        if (!File.Exists(filePath))
+    }
+    public static Calendar.EventInfo? LoadSingleEvent(int groupId, int eventId)
+    {
+        try
         {
-            Console.WriteLine($"Error: The file {filePath} was not found.");
-            return (new List<Calendar.EventInfo>(), new List<SubjectData>(), new List<GroupData>());
-        }
-        json = File.ReadAllText(filePath);
-    #endif
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"https://sharperserver.onrender.com/groups/{groupId}/events/{eventId}";
+                HttpResponseMessage response = client.GetAsync(url).Result;
 
-        if (json != null)
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Failed to fetch event: {response.ReasonPhrase}");
+                }
+
+                string responseContent = response.Content.ReadAsStringAsync().Result;
+
+                if (responseContent == "missing valid token")
+                {
+                    return null; // Return null to indicate no event was loaded
+                }
+
+                return JsonConvert.DeserializeObject<Calendar.EventInfo>(responseContent);
+            }
+        }
+        catch (Exception ex)
         {
-            var calendarData = JsonConvert.DeserializeObject<CalendarData>(json);
-            return (
-                calendarData?.Events ?? new List<Calendar.EventInfo>(),
-                calendarData?.Subjects ?? new List<SubjectData>(),
-                calendarData?.Groups ?? new List<GroupData>()
-            );
+            Debug.WriteLine($"Error loading event: {ex.Message}");
+            return null; // Fallback to null for error handling
         }
-
-        return (new List<Calendar.EventInfo>(), new List<SubjectData>(), new List<GroupData>());
     }
     public static void OnDayTapped(DateTime date)
     {
