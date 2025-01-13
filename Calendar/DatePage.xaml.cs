@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Net;
-using Android.Graphics;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Newtonsoft.Json;

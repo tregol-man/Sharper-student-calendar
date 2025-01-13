@@ -22,9 +22,16 @@ namespace Calendar
         private List<SubjectData> _subjects;
         private List<GroupData> _groups;
 
-        private void LoadEvents()
+        private void LoadMonthEvents(DateTime first, DateTime last)
         {
-            (_events, _subjects, _groups) = FunctionsLib.LoadEvents();
+            try
+            {
+                _events = FunctionsLib.LoadMonthEvents(first, last, 1) ?? new List<EventInfo>();
+            }
+            catch (Exception ex)
+            {
+                _events = new List<EventInfo>(); // Fallback to an empty list
+            }
         }
 
         // Function to populate calendar days
@@ -55,6 +62,7 @@ namespace Calendar
 
                 Debug.WriteLine($"First date shown: {firstDate.ToShortDateString()}");
                 Debug.WriteLine($"Last date shown: {lastDate.ToShortDateString()}");
+                LoadMonthEvents(firstDate, lastDate);
 
                 // Start filling days from the previous month
                 DateTime currentDate = firstDate;
