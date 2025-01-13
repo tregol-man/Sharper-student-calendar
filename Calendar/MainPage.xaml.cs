@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
@@ -96,7 +96,7 @@ namespace Calendar
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }, // Event 1
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }, // Event 2 or "Plus X more"
                 },
-                    BackgroundColor = isAdjacentMonth ? Colors.LightGray : Colors.White
+                    BackgroundColor = /*isAdjacentMonth ? Color.FromRgba("#5e608c") :*/ Colors.Transparent
                 };
 
                 // Create the day label with larger font size
@@ -106,7 +106,7 @@ namespace Calendar
                     FontSize = 24, // Larger font size for the day number
                     FontFamily = "Inter",
                     BackgroundColor = isToday ? Colors.LightBlue : Colors.Transparent,
-                    TextColor = Colors.White,
+                    TextColor = isAdjacentMonth ? Colors.Grey : Colors.White,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center
                 };
