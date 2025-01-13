@@ -2,8 +2,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.DatePage"
              Title="DatePage">
+    
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+                      Offset="0" />
+            <GradientStop Color="#8587DE"
+                      Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
+
     <StackLayout Padding="20">
-        <Label x:Name="DateLabel" FontSize="24" HorizontalOptions="Center" />
+        <Label x:Name="DateLabel" FontSize="24" FontAttributes="Bold" FontFamily="Inter" TextColor="#4F5171" HorizontalOptions="Center" />
         <StackLayout x:Name="EventsStackLayout" Padding="10" />
+
     </StackLayout>
 </ContentPage>
