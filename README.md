@@ -4,7 +4,7 @@ Tadeáš Antonín Pliska,
 Filip Soukup,
 Jan Brunclík
 --------------------------
-Sharper student slouží k vytvoření skupiny pro sdílení informací a materiálu k vzdělávání. Jeho hlavní myšlenkou je sjednotit informace na aplikacích, které jsou využívání studenty, jako například Google Keep, Google disk a Discord.
+Sharper student slouží k vytvoření skupiny pro sdílení informací a materiálu k vzdělávání. Jeho hlavní myšlenkou je sjednotit informace na aplikacích, které jsou využívání studenti, jako například Google Keep, Google disk a Discord.
 Aplikace má kalendář, do kterého můžou uživatelé ve skupině přidávat události, které jsou zobrazeny ostatním studentům. Tyto události mohou obsahovat i soubory pro např. obrázky.
 ------------------------
 
