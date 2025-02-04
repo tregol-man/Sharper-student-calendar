@@ -15,14 +15,14 @@ public partial class DatePage : ContentPage, IQueryAttributable
     }
 
     private List<EventInfo> _events;
-    private List<SubjectData> _subjects;
+    private List<SubjectData> _subjects = new List<SubjectData>();
+    private string? _selectedDate;
     private List<GroupData> _groups;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query.TryGetValue("date", out var dateString))
         {
-            Console.WriteLine($"Received date string: {dateString}");
             try
             {
                 // Parse the date from the query parameter
@@ -36,18 +36,19 @@ public partial class DatePage : ContentPage, IQueryAttributable
                     {
                         _events = new List<EventInfo>(); // Fallback to an empty list
                     }
+                    _selectedDate = date.ToString("MM/dd/yyyy");
                     // Display the selected date
-                    DateLabel.Text = $"Selected Date: {date.ToString("MM/dd/yyyy")}";
+                    DateLabel.Text = $"Selected Date: {_selectedDate}";
 
                     // Find events tied to this date
-                    var eventsForDate = _events.Where(e => e.DueDate.Date == date.Date).ToList();
+                    var eventsForDate = _events.Where(e => e.DueDateDatetime().Date == date.Date).ToList();
 
                     // Clear previous events
                     EventsStackLayout.Children.Clear();
 
                     if (eventsForDate.Any())
                     {
-                        var sortedEvents = eventsForDate.OrderBy(e => e.DueDate).ToList();
+                        var sortedEvents = eventsForDate.OrderBy(e => e.DueDateDatetime()).ToList();
                         DateTime? lastEventDate = null;
                         bool useBlueBackground = true;
 
@@ -65,7 +66,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
 
                             // Date label
                             // Alternate background colors
-                            lastEventDate = eventInfo.DueDate.Date;
+                            lastEventDate = eventInfo.DueDateDatetime().Date;
                             useBlueBackground = !useBlueBackground;
 
                             var detailsGrid = new Grid
@@ -168,5 +169,9 @@ public partial class DatePage : ContentPage, IQueryAttributable
                 DateLabel.Text = "Error loading events.";
             }
         }
+    }
+    private void CreateButton_Clicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync($"createevent?date={_selectedDate}");
     }
 }

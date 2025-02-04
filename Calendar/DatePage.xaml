@@ -17,6 +17,13 @@
     <StackLayout Padding="20">
         <Label x:Name="DateLabel" FontSize="24" FontAttributes="Bold" FontFamily="Inter" TextColor="#4F5171" HorizontalOptions="Center" />
         <StackLayout x:Name="EventsStackLayout" Padding="10" />
-
+        <Button x:Name="CreateButton"
+        Text="Create event"
+        FontFamily="Inter"
+        FontAttributes="Bold"
+        BackgroundColor="#5E52A0"
+        TextColor="White"
+        HorizontalOptions="Center"
+        Clicked="CreateButton_Clicked"/>
     </StackLayout>
 </ContentPage>

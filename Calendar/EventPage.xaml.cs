@@ -35,7 +35,7 @@ public partial class EventPage : ContentPage, IQueryAttributable
 
                 // Update the labels with event details
                 EventNameLabel.Text = eventInfo.Name;
-                DateLabel.Text = $"Due date: {eventInfo.DueDate.ToShortDateString()}";
+                DateLabel.Text = $"Due date: {eventInfo.DueDateDatetime().ToShortDateString()}";
                 SubjectLabel.Text = subjectName;
                 EventDetailsLabel.Text = eventInfo.Description;
             }

@@ -220,7 +220,7 @@ namespace Calendar
                 return new List<EventInfo>(); // Return an empty list if no events are available
             }
             // Here we filter the events for the selected month and day
-            var eventsForDay = _events.Where(e => e.DueDate.Date == date.Date).ToList();
+            var eventsForDay = _events.Where(e => e.DueDateDatetime().Date == date.Date).ToList();
             return eventsForDay;
         }
         // Function to navigate to the next or previous month

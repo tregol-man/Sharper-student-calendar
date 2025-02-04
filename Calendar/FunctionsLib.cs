@@ -19,7 +19,6 @@ public static class FunctionsLib
             int lastDaysSinceEpoch = (int)(last - new DateTime(1970, 1, 1)).TotalDays;
             string firstStr = firstDaysSinceEpoch.ToString();
             string lastStr = lastDaysSinceEpoch.ToString();
-            Console.WriteLine("TEST" + firstStr + " " + lastStr);
             string url = "https://sharperserver.onrender.com/groups/" + id + "/calendar/" + firstStr + "/" + lastStr;
             HttpResponseMessage response = client.GetAsync(url).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
@@ -39,7 +38,7 @@ public static class FunctionsLib
         using (HttpClient client = new HttpClient())
         {
             int dateSinceEpoch = (int)(date - new DateTime(1970, 1, 1)).TotalDays;
-            string datetStr = dateSinceEpoch.ToString("yyyy-MM-dd");
+            string datetStr = dateSinceEpoch.ToString();
             string url = "https://sharperserver.onrender.com/groups/" + id + "/calendar/" + datetStr;
             HttpResponseMessage response = client.GetAsync(url).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
@@ -92,7 +91,6 @@ public static class FunctionsLib
             {
                 string url = $"https://sharperserver.onrender.com/groups/{groupId}/events/{eventId}";
                 HttpResponseMessage response = client.GetAsync(url).Result;
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Failed to fetch event: {response.ReasonPhrase}");
@@ -104,7 +102,6 @@ public static class FunctionsLib
                 {
                     return null; // Return null to indicate no event was loaded
                 }
-
                 return JsonConvert.DeserializeObject<Calendar.EventInfo>(responseContent);
             }
         }

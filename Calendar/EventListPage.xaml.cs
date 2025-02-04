@@ -40,7 +40,7 @@ namespace Calendar
             if (sortByDate)
             {
                 // Sort events by date
-                sortedEvents = _events.OrderBy(e => e.DueDate);
+                sortedEvents = _events.OrderBy(e => e.DueDateDatetime());
             }
             else
             {
@@ -56,7 +56,7 @@ namespace Calendar
             foreach (var eventInfo in sortedEvents)
             {
                 string currentHeader = sortByDate
-                ? eventInfo.DueDate.ToString("MMMM yyyy") // Month and year for date sorting
+                ? eventInfo.DueDateDatetime().ToString("MMMM yyyy") // Month and year for date sorting
                 : _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
 
                 if (currentHeader != lastHeader)
@@ -97,7 +97,7 @@ namespace Calendar
                 };
                 var dateLabel = new Label
                 {
-                    Text = eventInfo.DueDate.ToString("MM/dd/yyyy"),
+                    Text = eventInfo.DueDateDatetime().ToString("MM/dd/yyyy"),
                     VerticalOptions = LayoutOptions.Center,
                     FontAttributes = FontAttributes.Bold,
                     FontFamily = "Inter",
@@ -105,14 +105,14 @@ namespace Calendar
                 };
                 TapGestureRecognizer tapGestureDate = new TapGestureRecognizer
                 {
-                    Command = new Command(() => FunctionsLib.OnDayTapped(eventInfo.DueDate.Date))
+                    Command = new Command(() => FunctionsLib.OnDayTapped(eventInfo.DueDateDatetime().Date))
                 };
                 dateLabel.GestureRecognizers.Add(tapGestureDate);
                 Grid.SetRow(dateLabel, 0);
                 Grid.SetColumn(dateLabel, 0);
                 eventGrid.Children.Add(dateLabel);
 
-                lastEventDate = eventInfo.DueDate.Date;
+                lastEventDate = eventInfo.DueDateDatetime().Date;
                 useBlueBackground = !useBlueBackground;
 
                 var detailsGrid = new Grid
@@ -200,6 +200,11 @@ namespace Calendar
         private void OnEventSortClicked(object sender, EventArgs e)
         {
             PopulateEventGrid(sortByDate: false); // Sort by subject
+        }
+
+        private void CreateButton_Clicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("createevent");
         }
     }
 }

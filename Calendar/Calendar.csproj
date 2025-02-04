@@ -82,6 +82,9 @@
 	  <Compile Update="EventListPage.xaml.cs">
 	    <DependentUpon>EventListPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="CreateEvent.xaml.cs">
+	    <DependentUpon>CreateEvent.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="ProfilePage.xaml.cs">
 	    <DependentUpon>ProfilePage.xaml</DependentUpon>
 	  </Compile>
@@ -95,6 +98,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="EventListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CreateEvent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ProfilePage.xaml">

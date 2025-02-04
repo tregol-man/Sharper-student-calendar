@@ -73,8 +73,14 @@ TextColor="#4F5171" Margin="0,5,0,0" />
                 </Border>
                     
             </HorizontalStackLayout>
-
-            <!-- Placeholder for dynamic content -->
+            <Button x:Name="CreateButton"
+                    Text="Create event"
+                    FontFamily="Inter"
+                    FontAttributes="Bold"
+                    BackgroundColor="#5E52A0"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    Clicked="CreateButton_Clicked"/>
             <VerticalStackLayout x:Name="DynamicContent" Spacing="15" />
 
         </VerticalStackLayout>

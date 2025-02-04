@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Create Event"
+             x:Class="Calendar.CreateEvent">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+              Offset="0" />
+            <GradientStop Color="#8587DE"
+              Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
+    <ScrollView>
+        <StackLayout Padding="20">
+            <Label x:Name="EventNameLabel" FontSize="30" FontAttributes="Bold" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="Start" Text="Create event" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Margin="0,0,0,20">
+                <!-- Date Button -->
+                <Button x:Name="SubjectsButton" 
+                        Text="Select subjects" 
+                        FontSize="18" 
+                        BackgroundColor="#4F5171" 
+                        TextColor="White" 
+                        FontFamily="Inter" 
+                        HorizontalOptions="StartAndExpand" />
+
+                <!-- Another Button -->
+                <Button x:Name="DateButton" 
+                        Text="date" 
+                        FontSize="18" 
+                        BackgroundColor="#4F5171" 
+                        TextColor="White" 
+                        FontFamily="Inter" 
+                        HorizontalOptions="End" 
+                        Margin="10,0,0,0" />
+            </StackLayout>
+            <Border
+            BackgroundColor="#4F5171"
+            Stroke="#4F5171"
+            StrokeThickness="15"
+            MinimumHeightRequest="700"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/>
+                </Border.StrokeShape>
+                <StackLayout>
+                    <Border
+                    Stroke="Transparent"
+                    >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15"/>
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Color="#5E52A0"
+                                        Offset="0" />
+                                <GradientStop Color="#8E80DE"
+                                        Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <Label x:Name="SubjectLabel" FontSize="18" HorizontalOptions="Center" FontFamily="Inter" TextColor="White"/>
+                    </Border>
+
+                    <Editor x:Name="EventDetailsEditor" 
+                            Placeholder="Enter event details..." 
+                            FontSize="18" 
+                            FontFamily="Inter" 
+                            TextColor="White" 
+                            BackgroundColor="#4F5171" 
+                            Margin="0,10,0,0" 
+                            HorizontalOptions="Fill" 
+                            VerticalOptions="Start"
+                            AutoSize="TextChanges"/>
+                    <Label Text="Attachments:" 
+                           FontSize="18" 
+                           FontFamily="Inter" 
+                           TextColor="White" 
+                           Margin="0,10,0,0" 
+                           HorizontalOptions="Start" />
+                    <Button x:Name="AttachmentsButton" Text="+" FontSize="18" BackgroundColor="White" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="StartAndExpand" />
+                </StackLayout>
+            </Border>
+            <Button x:Name="SaveButton" 
+            Text="Save" 
+            FontSize="18" 
+            BackgroundColor="#4F5171" 
+            TextColor="White" 
+            FontFamily="Inter" 
+            HorizontalOptions="StartAndExpand" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
