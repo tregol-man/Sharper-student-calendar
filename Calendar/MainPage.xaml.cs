@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Calendar
 {
@@ -94,6 +95,28 @@ namespace Calendar
             {
                 DateTime date = new DateTime(month.Year, month.Month, day);
                 bool isToday = date.Date == DateTime.Now.Date;
+                Color borBack;
+
+                if (isToday)
+                {
+                    borBack = Color.FromRgba(215, 198, 255, 186);
+                } else if (isAdjacentMonth) 
+                {
+                    borBack = Color.FromRgba(255, 255, 255, 127);
+                } else
+                {
+                    borBack = Color.FromRgba(255, 255, 255, 63);
+                }
+
+                Border dayBorder = new Border()
+                {
+                    Stroke = Colors.Transparent,
+                    StrokeShape = new RoundRectangle
+                    {
+                        CornerRadius = 10
+                    },
+                    BackgroundColor = borBack
+                };    
 
                 // Create a new Grid for each day
                 Grid dayGrid = new Grid
@@ -110,10 +133,11 @@ namespace Calendar
                 Label dayLabel = new Label
                 {
                     Text = day.ToString(),
-                    FontSize = 24, // Larger font size for the day number
+                    FontSize = 18, // Larger font size for the day number
                     FontFamily = "Inter",
-                    BackgroundColor = isToday ? Colors.LightBlue : Colors.Transparent,
-                    TextColor = isAdjacentMonth ? Colors.Grey : Colors.White,
+                    FontAttributes = FontAttributes.Bold,
+                    BackgroundColor = Colors.Transparent,
+                    TextColor = Colors.White,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Center
                 };
@@ -201,9 +225,11 @@ namespace Calendar
                 }
 
                 // Add the grid for the day to the calendar
-                Grid.SetRow(dayGrid, row);
-                Grid.SetColumn(dayGrid, col);
-                CalendarGrid.Children.Add(dayGrid);
+                Grid.SetRow(dayBorder, row);
+                Grid.SetColumn(dayBorder, col);
+
+                dayBorder.Content = dayGrid;
+                CalendarGrid.Children.Add(dayBorder);
             }
             catch (Exception ex)
             {
