@@ -113,7 +113,7 @@
                                 x:Name="CalendarGrid"
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand"
-                                Padding="5" 
+                                Padding="0" 
                                 RowSpacing="0"
                                 ColumnSpacing="0"
                                 BackgroundColor="Transparent">
