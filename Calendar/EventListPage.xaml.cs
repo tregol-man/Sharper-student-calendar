@@ -201,5 +201,10 @@ namespace Calendar
         {
             PopulateEventGrid(sortByDate: false); // Sort by subject
         }
+
+        private void CreateEventButton_Clicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("createevent");
+        }
     }
 }

@@ -17,6 +17,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
     private List<EventInfo> _events;
     private List<SubjectData> _subjects;
     private List<GroupData> _groups;
+    private DateTime? _selectedDate;
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -28,6 +29,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
                 // Parse the date from the query parameter
                 if (DateTime.TryParseExact(dateString.ToString(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var date))
                 {
+                    _selectedDate = date;
                     try
                     {
                         _events = FunctionsLib.LoadDateEvents(date, 1) ?? new List<EventInfo>();
@@ -168,5 +170,15 @@ public partial class DatePage : ContentPage, IQueryAttributable
                 DateLabel.Text = "Error loading events.";
             }
         }
+    }
+    private void CreateEventButton_Clicked(object sender, EventArgs e)
+    {
+        // Check if the date is set, use it for navigation
+        var selectedDate = _selectedDate?.ToString("MM/dd/yyyy") ?? DateTime.Now.ToString("MM/dd/yyyy");
+
+        Console.WriteLine($"Navigating with selected date: {selectedDate}");
+
+        // Navigate to the createevent page with the selected date
+        Shell.Current.GoToAsync($"createevent?date={selectedDate}");
     }
 }

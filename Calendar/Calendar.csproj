@@ -57,49 +57,51 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="dummyData.json" />
-	  <None Remove="Resources\dummyData.json" />
+		<None Remove="dummyData.json" />
+		<None Remove="Resources\dummyData.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Include="Resources\dummyData.json" />
+		<MauiAsset Include="Resources\dummyData.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+		<PackageReference Include="CommunityToolkit.Maui.Core" Version="9.1.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="DatePage.xaml.cs">
-	    <DependentUpon>DatePage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="EventPage.xaml.cs">
-	    <DependentUpon>EventPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="EventListPage.xaml.cs">
-	    <DependentUpon>EventListPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="ProfilePage.xaml.cs">
-	    <DependentUpon>ProfilePage.xaml</DependentUpon>
-	  </Compile>
+		<Compile Update="DatePage.xaml.cs">
+			<DependentUpon>DatePage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="EventPage.xaml.cs">
+			<DependentUpon>EventPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="EventListPage.xaml.cs">
+			<DependentUpon>EventListPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="ProfilePage.xaml.cs">
+			<DependentUpon>ProfilePage.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="DatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="EventPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="EventListPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="ProfilePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="DatePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="EventPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="EventListPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="ProfilePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 </Project>

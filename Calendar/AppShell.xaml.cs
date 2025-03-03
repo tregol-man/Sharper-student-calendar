@@ -10,6 +10,7 @@ namespace Calendar
             this.BindingContext = this;
             Routing.RegisterRoute("eventpage", typeof(EventPage));
             Routing.RegisterRoute("datepage", typeof(DatePage));
+            Routing.RegisterRoute("createevent", typeof(CreateEvent));
         }
     }
 }
