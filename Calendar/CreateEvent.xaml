@@ -15,34 +15,92 @@
     </ContentPage.Background>
     <ScrollView>
         <StackLayout Padding="20">
-            <Label x:Name="EventNameLabel" FontSize="30" FontAttributes="Bold" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="Start" Text="Create event" />
-            <Entry x:Name="EventNameEntry"
-               Placeholder="Enter event title..."
-               FontSize="18"
-               FontFamily="Inter"
-               TextColor="White"
-               BackgroundColor="#4F5171"
-               HorizontalOptions="Fill"
-               Margin="10"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Margin="0,0,0,20">
-                <Button x:Name="SubjectsButton" 
-                        Clicked="SubjectsButton_Clicked"    
-                        Text="Select subjects" 
-                        FontSize="18" 
-                        BackgroundColor="#4F5171" 
-                        TextColor="White" 
-                        FontFamily="Inter" 
-                        HorizontalOptions="StartAndExpand" />
+            <Label x:Name="EventNameLabel" FontSize="30" FontAttributes="Bold" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="Start" Text="Create event" Margin="0,0,0,15"/>
 
-                <Button x:Name="DateButton" 
-                        Clicked="DateButton_Clicked"    
-                        Text="date" 
-                        FontSize="18" 
-                        BackgroundColor="#4F5171" 
+            <Border
+                BackgroundColor="#4F5171"
+                >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="30"/>
+                </Border.StrokeShape>
+
+                <Entry x:Name="EventNameEntry"
+                   Placeholder="Enter event title..."
+                   FontSize="18"
+                   FontFamily="Inter"
+                   TextColor="White"
+                   HorizontalOptions="Fill"    
+                   Margin="10,0,0,0"/>
+
+            </Border>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Margin="0,0,0,20">
+
+                <Border
+                    BackgroundColor="#4F5171"
+                    StrokeThickness="1"
+                    Margin="0,10,60,0"
+                    HeightRequest="35"
+                    >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="30"/>
+                    </Border.StrokeShape>
+
+                    <Border.Background>
+
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="#5E52A0"
+                                                 Offset="0" />
+                            <GradientStop Color="#8E80DE"
+                                                 Offset="1" />
+                        </LinearGradientBrush>
+
+                    </Border.Background>
+
+                    <Button x:Name="SubjectsButton" 
+                        Clicked="SubjectsButton_Clicked"    
+                        Text="Add subjects" 
+                        FontSize="16" 
+                        BackgroundColor="Transparent" 
                         TextColor="White" 
                         FontFamily="Inter" 
-                        HorizontalOptions="End" 
-                        Margin="10,0,0,0" />
+                        HorizontalOptions="StartAndExpand" 
+                        Padding="70,0"
+                        Margin="0"/>
+                </Border>
+
+                <Border
+                    BackgroundColor="#4F5171"
+                    StrokeThickness="1"
+                    Margin="0,10,0,0"
+                    HorizontalOptions="End"
+                    HeightRequest="35"
+                        >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="30"/>
+                    </Border.StrokeShape>
+
+                    <Border.Background>
+
+                        <LinearGradientBrush EndPoint="1,0">
+                            <GradientStop Color="#5E52A0"
+                                 Offset="0" />
+                            <GradientStop Color="#8E80DE"
+                                 Offset="1" />
+                        </LinearGradientBrush>
+
+                    </Border.Background>
+
+                    <Button x:Name="DateButton" 
+                            Clicked="DateButton_Clicked"    
+                            Text="Date" 
+                            FontSize="16" 
+                            BackgroundColor="Transparent" 
+                            TextColor="White" 
+                            FontFamily="Inter" 
+                            HorizontalOptions="End"
+                            Padding="20,5"/>
+                </Border>
+
             </StackLayout>
             <Border
             BackgroundColor="#4F5171"
@@ -56,6 +114,7 @@
                 <StackLayout>
                     <Border
                     Stroke="Transparent"
+                    Margin="0,0,0,10"
                     >
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="15"/>
@@ -72,33 +131,49 @@
                         <Label x:Name="SubjectLabel" FontSize="18" HorizontalOptions="Center" FontFamily="Inter" TextColor="White"/>
                     </Border>
 
-                    <Editor x:Name="EventDetailsEditor" 
+                    <Border 
+                        BackgroundColor="#979BE1"
+                        >
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15"/>
+                        </Border.StrokeShape>
+
+                        <Editor x:Name="EventDetailsEditor" 
                             Placeholder="Enter event details..." 
                             FontSize="18" 
                             FontFamily="Inter" 
                             TextColor="White" 
-                            BackgroundColor="#4F5171" 
-                            Margin="0,10,0,0" 
+                            BackgroundColor="Transparent" 
+                            Margin="5,10,5,0"
+                            MinimumHeightRequest="300"
                             HorizontalOptions="Fill" 
                             VerticalOptions="Start"
                             AutoSize="TextChanges"/>
+
+                    </Border>
+
                     <Label Text="Attachments:" 
                            FontSize="18" 
                            FontFamily="Inter" 
+                           FontAttributes="Bold"
                            TextColor="White" 
-                           Margin="0,10,0,0" 
+                           Margin="0,20" 
                            HorizontalOptions="Start" />
-                    <Button x:Name="AttachmentsButton" Text="+" FontSize="18" BackgroundColor="White" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="StartAndExpand" />
+                    <Button x:Name="AttachmentsButton" MinimumHeightRequest="100" MinimumWidthRequest="70" Text="+" FontSize="18" BackgroundColor="White" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="StartAndExpand" />
                 </StackLayout>
             </Border>
             <Button x:Name="SaveButton" 
             Clicked="OnSaveButtonClicked"
             Text="Save" 
-            FontSize="18" 
-            BackgroundColor="#4F5171" 
-            TextColor="White" 
-            FontFamily="Inter" 
-            HorizontalOptions="StartAndExpand" />
+            FontSize="20" 
+            BackgroundColor="White" 
+            TextColor="#4F5171" 
+            FontFamily="Inter"
+            FontAttributes="Bold"
+            HorizontalOptions="StartAndExpand"
+            WidthRequest="370"
+            Margin="0,10,0,0"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

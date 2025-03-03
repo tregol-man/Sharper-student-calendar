@@ -73,12 +73,24 @@ TextColor="#4F5171" Margin="0,5,0,0" />
                 </Border>
                     
             </HorizontalStackLayout>
-            <Button x:Name="CreateEventButton"
-            Text="Create event"
-            FontFamily="Inter"
-            FontAttributes="Bold"
-            Clicked="CreateEventButton_Clicked"
-            BackgroundColor="Transparent"/>
+            <Border
+                BackgroundColor="#4F5171"
+                Padding="10"
+                >
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/>
+                </Border.StrokeShape>
+
+                <Button x:Name="CreateEventButton"
+                Text="Create event"
+                FontFamily="Inter"
+                FontSize="18"
+                FontAttributes="Bold"
+                Clicked="CreateEventButton_Clicked"
+                BackgroundColor="Transparent"/>
+            </Border>
+            
 
             <!-- Placeholder for dynamic content -->
             <VerticalStackLayout x:Name="DynamicContent" Spacing="15" />
