@@ -32,7 +32,7 @@ namespace Calendar
             }
             else
             {
-                DateButton.Text = "Select Date";
+                DateButton.Text = "Date";
             }
         }
         private void OnSaveButtonClicked(object sender, EventArgs e)

@@ -15,12 +15,25 @@
 
         <StackLayout x:Name="EventsStackLayout" Padding="10">
         </StackLayout>
-        <Button x:Name="CreateEventButton"
-        Text="Create event"
-        FontFamily="Inter"
-        FontAttributes="Bold"
-        Clicked="CreateEventButton_Clicked"
-        BackgroundColor="Transparent"/>
+        <Border
+            BackgroundColor="#4F5171"
+            Padding="10"
+            >
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15"/>
+                    </Border.StrokeShape>
+
+                    <Button x:Name="CreateEventButton"
+            Text="Create event"
+            ImageSource="create_plus_icon.png"
+            HeightRequest="45"
+            FontFamily="Inter"
+            FontSize="18"
+            FontAttributes="Bold"
+            Clicked="CreateEventButton_Clicked"
+            BackgroundColor="Transparent"/>
+        </Border>
 
     </StackLayout>
 </ContentPage>

@@ -94,4 +94,24 @@
             </DataTemplate>
         </Shell.ItemTemplate>
     </FlyoutItem>
+    <FlyoutItem Title="LoginTest">
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+        <Shell.ItemTemplate>
+            <DataTemplate>
+                <Grid ColumnDefinitions="0.2*,0.8*">
+                    <Image Source="setting_icon_white.png"
+                   Scale="0.75"
+                   Margin="5"
+                   HeightRequest="45" />
+                    <Label Grid.Column="1"
+                   Text="LoginTest"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   FontFamily="Inter"
+                   TextColor="White"
+                   VerticalTextAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </Shell.ItemTemplate>
+    </FlyoutItem>
 </Shell>
