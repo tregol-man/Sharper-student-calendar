@@ -10,10 +10,16 @@ namespace Calendar
 {
     public partial class CreateEvent : ContentPage, IQueryAttributable
     {
-
+        private List<SubjectData> _subjects;
         public CreateEvent()
         {
             InitializeComponent();
+            _subjects = new List<SubjectData>
+            {
+                new SubjectData { Id = 1, Name = "Math", Hue = 0 },
+                new SubjectData { Id = 2, Name = "Science",  Hue = 1 },
+                new SubjectData { Id = 3, Name = "History", Hue = 2 }
+            };
         }
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
@@ -41,7 +47,8 @@ namespace Calendar
             string eventName = EventNameEntry.Text?.Trim();
             string eventDate = DateButton.Text;
             string eventDescription = EventDetailsEditor.Text?.Trim();
-            int subjectId = string.IsNullOrEmpty(SubjectLabel.Text) ? 0 : int.TryParse(SubjectLabel.Text, out int id) ? id : 0;
+            string selectedSubjectName = SubjectsButton.Text?.Trim();
+            int subjectId = _subjects.FirstOrDefault(s => s.Name == selectedSubjectName)?.Id ?? 0;
 
             // Validate required fields
             bool isValid = !string.IsNullOrEmpty(eventName) &&
@@ -62,11 +69,25 @@ namespace Calendar
 
             // Print validation result
             Debug.WriteLine(isValid ? "OK" : "ERROR");
+            if (isValid) {
+                Console.WriteLine(FunctionsLib.CreateEvent(json, 1));
+            }
         }
 
         private void SubjectsButton_Clicked(object sender, EventArgs e)
         {
+            ObservableCollection<SubjectData>  SubjectsCollection = new ObservableCollection<SubjectData>(_subjects);
 
+            var popup = new SubjectsPopup(SubjectsCollection);
+            popup.Closed += (s, args) =>
+            {
+                if (args.Result is SubjectData selectedSubject)
+                {
+                    SubjectsButton.Text = selectedSubject.Name;
+                }
+            };
+
+            Shell.Current.ShowPopup(popup);
         }
 
         private void DateButton_Clicked(object sender, EventArgs e)

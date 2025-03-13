@@ -21,7 +21,7 @@ namespace Calendar
         private DateTime _selectedMonth;
         private List<EventInfo> _events;
         private List<SubjectData> _subjects;
-        private List<GroupData> _groups;
+        private GroupData _group;
 
         private void LoadMonthEvents(DateTime first, DateTime last)
         {

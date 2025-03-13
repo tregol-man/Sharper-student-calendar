@@ -8,7 +8,7 @@
         <CollectionView ItemsSource="{Binding Subjects}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Button Text="{Binding Name}" Command="{Binding SelectCommand}" CommandParameter="{Binding}" />
+                    <Button Text="{Binding Name}" Clicked="SubjectSelected" CommandParameter="{Binding}" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
