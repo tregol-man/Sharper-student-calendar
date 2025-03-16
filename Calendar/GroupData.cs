@@ -9,7 +9,8 @@ namespace Calendar
 {
     public class GroupData
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int group_id { get; set; }
+        public string group_name { get; set; }
+        public int level { get; set; }
     }
 }

@@ -9,28 +9,45 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2.Flows;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 public partial class LoginPage : ContentPage
 {
 	private string clientId = "973820326914-6nbldai65vlm0gr636l177b47p7ots1e";
     private GroupData _group;
     private List<SubjectData> _subjects;
+    private UserData _user;
 
     public LoginPage()
 	{
         InitializeComponent();
-        _group = FunctionsLib.GetUserData();
-        if (_group != null&& _group.Id != -1)
-        {
-            Console.WriteLine("group set properly");
-        }
     }
 
 	private void OnGoogleLoginClick(object sender, EventArgs e)
 	{
 		string userName = "brumbal";
 		string email = "brumbal@gmail.com";
-        Console.WriteLine(FunctionsLib.RegisterUser(userName, clientId, email));
+        if (FunctionsLib.RegisterUser(userName, clientId, email) != -1)
+        {
+            UpdateUser();
+            if (_user == null)
+            {
+                // Handle the case where user or groups are null
+                Console.WriteLine("User data is null.");
+                return;
+            }
+
+            if (_user.groups.Count > 0 && _user.groups != null)
+            {
+                Application.Current.MainPage = new AppShell();
+            }
+            else
+            {
+                Application.Current.MainPage = new JoinCreatePage();   
+            }
+
+        }
+
 	}
 
     public async void GetGoogleAccount() // Prozatím nefunkèní
@@ -81,48 +98,33 @@ public partial class LoginPage : ContentPage
             await DisplayAlert("Chyba", ex.Message, "OK");
         }
 	}
-    private void OnCreateGroupClick(object sender, EventArgs e)
-    {
-        string groupName = "Test Group"; // Change this to dynamically enter a name if needed
-        int GroupId = FunctionsLib.CreateGroup(groupName);
-        Console.WriteLine(GroupId);
-        UpdateUser();
-
-    }
-
-    private void OnJoinGroupClick(object sender, EventArgs e)
-    {
-        string groupCode = "HcLp4Z"; 
-        Console.WriteLine(FunctionsLib.JoinGroup(groupCode));
-        UpdateUser();
-
-    }
-
-    private void OnLeaveGroupClick(object sender, EventArgs e)
-    {
-        Console.WriteLine(FunctionsLib.LeaveGroup(_group.Id));
-        UpdateUser();
-    }
-    private void OnDeleteGroupClick(object sender, EventArgs e)
-    {
-        Console.WriteLine(FunctionsLib.DeleteGroup(_group.Id));
-        UpdateUser();
-    }
-    private void OnCreateSubjectClick(object sender, EventArgs e)
-    {
-        Console.WriteLine(FunctionsLib.CreateSubject(_group.Id, "math", 100));
-    }
     private void UpdateUser()
     {
-        _group = FunctionsLib.GetUserData();
-        if (_group != null && _group.Id != -1)
+        _user = FunctionsLib.GetUserData();
+        if (_user == null)
         {
-            Console.WriteLine("group set properly :"+ _group.Id);
-            _subjects = FunctionsLib.GetGroupSubjects(_group.Id);
+            Console.WriteLine("Failed to fetch user data.");
+            return;
+        }
+        Debug.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+        if (_user.groups != null && _user.groups.Count > 0)
+        {
+            _group = _user.groups[0];
+            if (_group.group_id != -1)
+            {
+                Console.WriteLine("Group set properly: " + _group.group_id);
+                _subjects = FunctionsLib.GetGroupSubjects(_group.group_id);
+            }
+            else
+            {
+                Console.WriteLine("Group is invalid");
+            }
         }
         else
         {
-            Console.WriteLine("group not set");
+            Console.WriteLine("User has no groups.");
+            _group = null;
+            _subjects = new List<SubjectData>();
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Diagnostics;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 public static class FunctionsLib
 {
     private const string baseURL = "https://sharperserver.onrender.com/";
@@ -22,14 +23,6 @@ public static class FunctionsLib
         {
             return $"Token: {Token}, UserId: {UserId}";
         }
-    }
-    public class UserData
-    {
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string GoogleId { get; set; }
-        public string Email { get; set; }
-        public int GroupId { get; set; } = -1; // Store only the first group ID
     }
     public static AuthData LoadToken()
     {
@@ -109,6 +102,7 @@ public static class FunctionsLib
         if (string.IsNullOrEmpty(authData.Token))
         {
             Debug.WriteLine("Token is empty. Authorization failed.");
+            RedirectToLogin();
             return null; // Handle accordingly
         }
 
@@ -186,6 +180,12 @@ public static class FunctionsLib
             return userId;
         }
     }
+    public static void LogoutUser()
+    {
+        ClearToken();
+        Debug.WriteLine("User logged out successfully.");
+        RedirectToLogin(); 
+    }
     public static bool AutoLogin()
     {
         var authData = LoadToken();
@@ -198,6 +198,11 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
             string url = $"{baseURL}group/";
 
             var requestData = new { group_name = groupName };
@@ -223,6 +228,11 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return null; // User is already being redirected
+            }
             string url = $"{baseURL}group/code/{groupCode}";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
@@ -243,6 +253,11 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return null; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}/code";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
@@ -262,9 +277,17 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
+
             string url = $"{baseURL}group/code/{groupCode}";
 
-            HttpResponseMessage response = client.GetAsync(url).Result;
+            // Create a POST request with an empty body
+            HttpContent content = new StringContent("{}", Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
@@ -281,26 +304,36 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}";
 
-            HttpResponseMessage response = client.GetAsync(url).Result;
+            var request = new HttpRequestMessage(HttpMethod.Delete, url);
+            HttpResponseMessage response = client.SendAsync(request).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (!response.IsSuccessStatusCode)
             {
                 Debug.WriteLine($"Error deleting group: {response.StatusCode} - {response.ReasonPhrase}");
-                return -1; // Failure
+                return -1; // Return -1 if deletion fails
             }
 
             var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
-            return responseData?.data?.group_id ?? -1; // Return group ID or -1 if failed
+            return responseData?.data ?? -1; // Return deleted group ID, or -1 if failed
         }
     }
-
     public static int LeaveGroup(int groupId)
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}/members";
 
             HttpResponseMessage response = client.DeleteAsync(url).Result;
@@ -316,14 +349,20 @@ public static class FunctionsLib
             return responseData?.data ?? -1; // Return group ID or -1 if failed
         }
     }
-    public static GroupData GetUserData()
+    public static UserData GetUserData()
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return null; // User is already being redirected
+            }
             string url = $"{baseURL}user/me";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(responseContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -331,27 +370,23 @@ public static class FunctionsLib
                 return null;
             }
 
-            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
-            GroupData groupData = null;
+            var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
 
-            // Check if groups exist and extract the first one
-            if (responseData?.data?.groups != null && responseData.data.groups.Count > 0)
-            {
-                var firstGroup = responseData.data.groups[0];
-                groupData = new GroupData
-                {
-                    Id = firstGroup?.group_id ?? -1,
-                    Name = firstGroup?.group_name ?? "" 
-                };
-            }
-
-            return groupData;
+            // Get the 'data' object and deserialize it into UserData
+            var userDataJson = responseObject["data"].ToString();
+            var responseData = JsonConvert.DeserializeObject<UserData>(userDataJson);
+            return responseData;
         }
     }
     public static int CreateEvent(string json, int groupId)
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}/event";
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -370,55 +405,88 @@ public static class FunctionsLib
             return responseData?.data ?? -1; // Return user ID if successful, otherwise -1
         }
     }
+    public static int UpdateEvent(string json, int groupId, int eventId)
+    {
+        using (HttpClient client = CreateAuthorizedClient())
+        {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
+            string url = $"{baseURL}group/{groupId}/event/{eventId}";
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), url) { Content = content };
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"Error updating event: {response.StatusCode} - {response.ReasonPhrase}");
+                Debug.WriteLine($"Response: {responseContent}");
+                return -1; // Return -1 to indicate failure
+            }
+
+            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
+            return responseData?.data ?? -1; // Return event ID if successful, otherwise -1
+        }
+    }
     public static List<Calendar.EventInfo> LoadMonthEvents(DateTime first, DateTime last, int id)
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
-            int firstDaysSinceEpoch = (int)(first - new DateTime(1970, 1, 1)).TotalDays;
-            int lastDaysSinceEpoch = (int)(last - new DateTime(1970, 1, 1)).TotalDays;
-            string firstStr = firstDaysSinceEpoch.ToString();
-            string lastStr = lastDaysSinceEpoch.ToString();
-            string url = baseURL+ "groups/" + id + "/calendar/" + firstStr + "/" + lastStr;
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return null; // User is already being redirected
+            }
+            string firstStr = first.ToString("yyyy-MM-dd");
+            string lastStr = last.ToString("yyyy-MM-dd");
+            string url = $"{baseURL}group/{id}/event/range/{firstStr}/{lastStr}";
+
             HttpResponseMessage response = client.GetAsync(url).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
-            if (responseContent != "missing valid token")
-            {
-                var responseData = JsonConvert.DeserializeObject<List<Calendar.EventInfo>>(responseContent);
-                return responseData;
-            }
-            else
-            {
-                return new List<Calendar.EventInfo>();
-            }
+            var jsonObject = JsonConvert.DeserializeObject<JObject>(responseContent);
+            Console.WriteLine(jsonObject.ToString());
+
+            var eventList = jsonObject["data"]?.ToObject<List<Calendar.EventInfo>>() ?? new List<Calendar.EventInfo>();
+            return eventList;
         }
     }
+
     public static List<Calendar.EventInfo> LoadDateEvents(DateTime date, int id)
     {
+        Console.WriteLine(date + " " + id);
         using (HttpClient client = CreateAuthorizedClient())
         {
-            int dateSinceEpoch = (int)(date - new DateTime(1970, 1, 1)).TotalDays;
-            string datetStr = dateSinceEpoch.ToString();
-            string url = baseURL + "/groups/" + id + "/calendar/" + datetStr;
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return null; // User is already being redirected
+            }
+            string dateStr = date.ToString("yyyy-MM-dd");
+            string url = $"{baseURL}group/{id}/event/day/{dateStr}";
+
             HttpResponseMessage response = client.GetAsync(url).Result;
             string responseContent = response.Content.ReadAsStringAsync().Result;
-            if (responseContent != "missing valid token")
-            {
-                var responseData = JsonConvert.DeserializeObject<List<Calendar.EventInfo>>(responseContent);
-                return responseData;
-            }
-            else
-            {
-                return new List<Calendar.EventInfo>();
-            }
+            var jsonObject = JsonConvert.DeserializeObject<JObject>(responseContent);
+            Console.WriteLine(jsonObject.ToString());
+
+            var eventList = jsonObject["data"]?.ToObject<List<Calendar.EventInfo>>() ?? new List<Calendar.EventInfo>();
+            return eventList;
         }
     }
+
     public static List<Calendar.EventInfo> LoadAllEvents(int id)
     {
+        Console.WriteLine(id + " all events");
         try
         {
             using (HttpClient client = CreateAuthorizedClient())
             {
-                string url = baseURL + "/groups/" + id + "/events";
+                string url = $"{baseURL}group/{id}/event";
                 HttpResponseMessage response = client.GetAsync(url).Result;
 
                 if (!response.IsSuccessStatusCode)
@@ -433,7 +501,12 @@ public static class FunctionsLib
                     return new List<Calendar.EventInfo>();
                 }
 
-                return JsonConvert.DeserializeObject<List<Calendar.EventInfo>>(responseContent) ?? new List<Calendar.EventInfo>();
+                var jsonObject = JsonConvert.DeserializeObject<JObject>(responseContent);
+                Console.WriteLine(jsonObject.ToString());
+
+                var eventList = jsonObject["data"]?.ToObject<List<Calendar.EventInfo>>() ?? new List<Calendar.EventInfo>();
+                Console.WriteLine(eventList[0].event_date);
+                return eventList;
             }
         }
         catch (Exception ex)
@@ -442,10 +515,62 @@ public static class FunctionsLib
             return new List<Calendar.EventInfo>(); // Fallback to an empty list
         }
     }
+
+    public static Calendar.EventInfo? LoadSingleEvent(int groupId, int eventId)
+    {
+        Console.WriteLine(groupId + " " + eventId);
+        try
+        {
+            using (HttpClient client = CreateAuthorizedClient())
+            {
+                if (client == null)
+                {
+                    Debug.WriteLine("Authorization failed. Redirecting to login...");
+                    return null; // User is already being redirected
+                }
+                string url = $"{baseURL}group/{groupId}/event/{eventId}";
+                HttpResponseMessage response = client.GetAsync(url).Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Failed to fetch event: {response.ReasonPhrase}");
+                }
+
+                string responseContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine(responseContent);
+                if (responseContent == "missing valid token")
+                {
+                    return null; // Return null to indicate no event was loaded
+                }
+                var jsonObject = JsonConvert.DeserializeObject<JObject>(responseContent);
+
+                // Extract the "data" part of the response
+                var eventInfo = jsonObject["data"]?.ToObject<Calendar.EventInfo>();
+
+                if (eventInfo != null)
+                {
+                    // Return the deserialized EventInfo object
+                    return eventInfo;
+                }
+
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error loading event: {ex.Message}");
+            return null; // Fallback to null for error handling
+        }
+    }
     public static int CreateSubject(int groupId, string subjectName, int subjectHue)
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}/subject";
             var requestBody = new
             {
@@ -472,6 +597,11 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return null; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}/subject";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
@@ -508,6 +638,11 @@ public static class FunctionsLib
     {
         using (HttpClient client = CreateAuthorizedClient())
         {
+            if (client == null)
+            {
+                Debug.WriteLine("Authorization failed. Redirecting to login...");
+                return -1; // User is already being redirected
+            }
             string url = $"{baseURL}group/{groupId}/subject/{subjectId}";
 
             HttpResponseMessage response = client.DeleteAsync(url).Result;
@@ -523,34 +658,6 @@ public static class FunctionsLib
             return responseData?.data ?? -1; // Return deleted subject ID
         }
     }
-    public static Calendar.EventInfo? LoadSingleEvent(int groupId, int eventId)
-    {
-        try
-        {
-            using (HttpClient client = CreateAuthorizedClient())
-            {
-                string url = $"{baseURL}/groups/{groupId}/events/{eventId}";
-                HttpResponseMessage response = client.GetAsync(url).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"Failed to fetch event: {response.ReasonPhrase}");
-                }
-
-                string responseContent = response.Content.ReadAsStringAsync().Result;
-
-                if (responseContent == "missing valid token")
-                {
-                    return null; // Return null to indicate no event was loaded
-                }
-                return JsonConvert.DeserializeObject<Calendar.EventInfo>(responseContent);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error loading event: {ex.Message}");
-            return null; // Fallback to null for error handling
-        }
-    }
     public static void OnDayTapped(DateTime date)
     {
         var formattedDate = date.ToString("yyyy-MM-dd");
@@ -559,5 +666,10 @@ public static class FunctionsLib
     public static void OnEventTapped(int eventId)
     {
         Shell.Current.GoToAsync($"eventpage?eventId={eventId}");
+    }
+    public static void RedirectToLogin()
+    {
+        Debug.WriteLine("Redirecting user to login...");
+        Application.Current.MainPage = new LoginPage();
     }
 }

@@ -9,28 +9,68 @@ namespace Calendar
 {
     public partial class MainPage : ContentPage
     {
+        private DateTime _currentMonth;
+        private DateTime _selectedMonth;
+        private List<EventInfo> _events;
+        private List<SubjectData> _subjects;
+        private GroupData _group;
+        private UserData _user;
 
         public MainPage()
         {
             InitializeComponent();
             _currentMonth = DateTime.Now; // Set the initial month to the current month
             _selectedMonth = _currentMonth;
+            UpdateUser();
             UpdateCalendar(_selectedMonth);
         }
-        private DateTime _currentMonth;
-        private DateTime _selectedMonth;
-        private List<EventInfo> _events;
-        private List<SubjectData> _subjects;
-        private GroupData _group;
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Reload user data and calendar when the page is displayed again
+            UpdateUser();
+            UpdateCalendar(_selectedMonth);
+        }
+        private void UpdateUser()
+        {
+            _user = FunctionsLib.GetUserData();
+            if (_user == null)
+            {
+                Console.WriteLine("Failed to fetch user data.");
+                return;
+            }
+            Debug.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+            if (_user.groups != null && _user.groups.Count > 0)
+            {
+                _group = _user.groups[0];
+                if (_group.group_id != -1)
+                {
+                    Console.WriteLine("Group set properly: " + _group.group_id);
+                    _subjects = FunctionsLib.GetGroupSubjects(_group.group_id);
+                }
+                else
+                {
+                    Console.WriteLine("Group is invalid");
+                }
+            }
+            else
+            {
+                Console.WriteLine("User has no groups.");
+                _group = null;
+                _subjects = new List<SubjectData>();
+            }
+        }
 
         private void LoadMonthEvents(DateTime first, DateTime last)
         {
             try
             {
-                _events = FunctionsLib.LoadMonthEvents(first, last, 1) ?? new List<EventInfo>();
+                _events = FunctionsLib.LoadMonthEvents(first, last, _group.group_id) ?? new List<EventInfo>();
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"{ex.Message}");
                 _events = new List<EventInfo>(); // Fallback to an empty list
             }
         }
@@ -159,7 +199,7 @@ namespace Calendar
                 {
                     Label eventLabel1 = new Label
                     {
-                        Text = eventsForDay[0].Name.Length > 10 ? eventsForDay[0].Name.Substring(0, 10) + "..." : eventsForDay[0].Name,
+                        Text = eventsForDay[0].event_name.Length > 10 ? eventsForDay[0].event_name.Substring(0, 10) + "..." : eventsForDay[0].event_name,
                         FontSize = 12, // Smaller font size for events
                         FontFamily = "Inter",
                         BackgroundColor = Colors.White,
@@ -173,7 +213,7 @@ namespace Calendar
                     {
                         Label eventLabel2 = new Label
                         {
-                            Text = eventsForDay[1].Name.Length > 10 ? eventsForDay[1].Name.Substring(0, 10) + "..." : eventsForDay[1].Name,
+                            Text = eventsForDay[1].event_name.Length > 10 ? eventsForDay[1].event_name.Substring(0, 10) + "..." : eventsForDay[1].event_name,
                             FontSize = 12,
                             FontFamily = "Inter",
                             BackgroundColor = Colors.LightBlue,
@@ -246,7 +286,7 @@ namespace Calendar
                 return new List<EventInfo>(); // Return an empty list if no events are available
             }
             // Here we filter the events for the selected month and day
-            var eventsForDay = _events.Where(e => e.DueDate.Date == date.Date).ToList();
+            var eventsForDay = _events.Where(e => e.event_date.Date == date.Date).ToList();
             return eventsForDay;
         }
         // Function to navigate to the next or previous month

@@ -9,11 +9,12 @@ namespace Calendar
 {
     public class EventInfo
     {
-        public int Id { get; set; } // Auto-incrementing ID property
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime DueDate { get; set; }
-        public int SubjectId { get; set; }
-        public int GroupId { get; set; }
+        public int event_id { get; set; } // Auto-incrementing ID property
+        public string event_name { get; set; }
+        public string event_description { get; set; }
+        public DateTime event_date { get; set; }
+        public List<string> Files { get; set; }
+        public int subject_id { get; set; }
+        public int creator_id { get; set; }
     }
 }

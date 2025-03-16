@@ -15,6 +15,16 @@
     <StackLayout Padding="20">
         <Label x:Name="EventNameLabel" FontSize="30" FontAttributes="Bold" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="Start" />
         <Label x:Name="DateLabel" FontSize="18" HorizontalOptions="Start" TextColor="#4F5171" FontFamily="Inter" Margin="0,0,0,20"/>
+        <Button x:Name="EditButton"
+        HeightRequest="50"
+        Clicked="EditButton_Clicked"
+        Text="Edit"
+        IsEnabled="False"
+        IsVisible="False"
+        FontFamily="Inter"
+        FontAttributes="Bold"
+        TextColor="#4F5171"
+        BackgroundColor="Transparent"/>
         <Border
             BackgroundColor="#4F5171"
             Stroke="#4F5171"

@@ -9,15 +9,45 @@ namespace Calendar;
 
 public partial class DatePage : ContentPage, IQueryAttributable
 {
+    private List<EventInfo> _events;
+    private List<SubjectData> _subjects;
+    private GroupData _group;
+    private UserData _user;
+    private DateTime? _selectedDate;
     public DatePage()
     {
         InitializeComponent();
+        UpdateUser();
     }
-
-    private List<EventInfo> _events;
-    private List<SubjectData> _subjects;
-    private List<GroupData> _groups;
-    private DateTime? _selectedDate;
+    private void UpdateUser()
+    {
+        _user = FunctionsLib.GetUserData();
+        if (_user == null)
+        {
+            Console.WriteLine("Failed to fetch user data.");
+            return;
+        }
+        Console.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+        if (_user.groups != null && _user.groups.Count > 0)
+        {
+            _group = _user.groups[0];
+            if (_group.group_id != -1)
+            {
+                Console.WriteLine("Group set properly: " + _group.group_id);
+                _subjects = FunctionsLib.GetGroupSubjects(_group.group_id);
+            }
+            else
+            {
+                Console.WriteLine("Group is invalid");
+            }
+        }
+        else
+        {
+            Console.WriteLine("User has no groups.");
+            _group = null;
+            _subjects = new List<SubjectData>();
+        }
+    }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -42,14 +72,14 @@ public partial class DatePage : ContentPage, IQueryAttributable
                     DateLabel.Text = $"Selected Date: {date.ToString("MM/dd/yyyy")}";
 
                     // Find events tied to this date
-                    var eventsForDate = _events.Where(e => e.DueDate.Date == date.Date).ToList();
+                    var eventsForDate = _events.Where(e => e.event_date.Date == date.Date).ToList();
 
                     // Clear previous events
                     EventsStackLayout.Children.Clear();
 
                     if (eventsForDate.Any())
                     {
-                        var sortedEvents = eventsForDate.OrderBy(e => e.DueDate).ToList();
+                        var sortedEvents = eventsForDate.OrderBy(e => e.event_date).ToList();
                         DateTime? lastEventDate = null;
                         bool useBlueBackground = true;
 
@@ -67,7 +97,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
 
                             // Date label
                             // Alternate background colors
-                            lastEventDate = eventInfo.DueDate.Date;
+                            lastEventDate = eventInfo.event_date.Date;
                             useBlueBackground = !useBlueBackground;
 
                             var detailsGrid = new Grid
@@ -85,14 +115,14 @@ public partial class DatePage : ContentPage, IQueryAttributable
                             // Add tap gesture to the details grid
                             TapGestureRecognizer tapGestureEvent = new TapGestureRecognizer
                             {
-                                Command = new Command(() => FunctionsLib.OnEventTapped(eventInfo.Id))
+                                Command = new Command(() => FunctionsLib.OnEventTapped(eventInfo.event_id))
                             };
                             detailsGrid.GestureRecognizers.Add(tapGestureEvent);
 
                             // Event name
                             var nameLabel = new Label
                             {
-                                Text = eventInfo.Name,
+                                Text = eventInfo.event_name,
                                 FontAttributes = FontAttributes.Bold,
                                 Margin = new Thickness(10, 5, 0, 5),
                                 FontFamily = "Inter",
@@ -125,7 +155,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
                             };
 
                             // Event subject
-                            var subjectName = _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
+                            var subjectName = _subjects.FirstOrDefault(s => s.Id == eventInfo.subject_id)?.Name ?? "Unknown Subject";
                             var subjectLabel = new Label
                             {
                                 Text = subjectName,
@@ -174,7 +204,7 @@ public partial class DatePage : ContentPage, IQueryAttributable
     private void CreateEventButton_Clicked(object sender, EventArgs e)
     {
         // Check if the date is set, use it for navigation
-        var selectedDate = _selectedDate?.ToString("MM/dd/yyyy") ?? DateTime.Now.ToString("MM/dd/yyyy");
+        var selectedDate = _selectedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
 
         Console.WriteLine($"Navigating with selected date: {selectedDate}");
 

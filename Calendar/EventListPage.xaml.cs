@@ -10,15 +10,55 @@ namespace Calendar
 {
     public partial class EventListPage : ContentPage
     {
+        private List<EventInfo> _events;
+        private List<SubjectData> _subjects = new List<SubjectData>();
+        private GroupData _group;
+        private UserData _user;
         public EventListPage()
         {
             InitializeComponent();
             LoadEvents();
             PopulateEventGrid();
+            UpdateUser();
         }
-        private List<EventInfo> _events;
-        private List<SubjectData> _subjects = new List<SubjectData>();
-        private List<GroupData> _groups;
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Reload user data and calendar when the page is displayed again
+            UpdateUser();
+            LoadEvents();
+            PopulateEventGrid();
+        }
+        private void UpdateUser()
+        {
+            _user = FunctionsLib.GetUserData();
+            if (_user == null)
+            {
+                Console.WriteLine("Failed to fetch user data.");
+                return;
+            }
+            Debug.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+            if (_user.groups != null && _user.groups.Count > 0)
+            {
+                _group = _user.groups[0];
+                if (_group.group_id != -1)
+                {
+                    Console.WriteLine("Group set properly: " + _group.group_id);
+                    _subjects = FunctionsLib.GetGroupSubjects(_group.group_id);
+                }
+                else
+                {
+                    Console.WriteLine("Group is invalid");
+                }
+            }
+            else
+            {
+                Console.WriteLine("User has no groups.");
+                _group = null;
+                _subjects = new List<SubjectData>();
+            }
+        }
 
         private void LoadEvents()
         {
@@ -40,14 +80,14 @@ namespace Calendar
             if (sortByDate)
             {
                 // Sort events by date
-                sortedEvents = _events.OrderBy(e => e.DueDate);
+                sortedEvents = _events.OrderBy(e => e.event_date);
             }
             else
             {
                 // Sort events by subject name
                 sortedEvents = _events
-                    .OrderBy(e => _subjects.FirstOrDefault(s => s.Id == e.SubjectId)?.Name ?? "Unknown Subject")
-                    .ThenBy(e => e.Name);
+                    .OrderBy(e => _subjects.FirstOrDefault(s => s.Id == e.subject_id)?.Name ?? "Unknown Subject")
+                    .ThenBy(e => e.event_name);
             }
             DateTime? lastEventDate = null;
             string lastHeader = null;
@@ -56,8 +96,8 @@ namespace Calendar
             foreach (var eventInfo in sortedEvents)
             {
                 string currentHeader = sortByDate
-                ? eventInfo.DueDate.ToString("MMMM yyyy") // Month and year for date sorting
-                : _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
+                ? eventInfo.event_date.ToString("MMMM yyyy") // Month and year for date sorting
+                : _subjects.FirstOrDefault(s => s.Id == eventInfo.subject_id)?.Name ?? "Unknown Subject";
 
                 if (currentHeader != lastHeader)
                 {
@@ -97,7 +137,7 @@ namespace Calendar
                 };
                 var dateLabel = new Label
                 {
-                    Text = eventInfo.DueDate.ToString("MM/dd/yyyy"),
+                    Text = eventInfo.event_date.ToString("MM/dd/yyyy"),
                     VerticalOptions = LayoutOptions.Center,
                     FontAttributes = FontAttributes.Bold,
                     FontFamily = "Inter",
@@ -105,14 +145,14 @@ namespace Calendar
                 };
                 TapGestureRecognizer tapGestureDate = new TapGestureRecognizer
                 {
-                    Command = new Command(() => FunctionsLib.OnDayTapped(eventInfo.DueDate.Date))
+                    Command = new Command(() => FunctionsLib.OnDayTapped(eventInfo.event_date.Date))
                 };
                 dateLabel.GestureRecognizers.Add(tapGestureDate);
                 Grid.SetRow(dateLabel, 0);
                 Grid.SetColumn(dateLabel, 0);
                 eventGrid.Children.Add(dateLabel);
 
-                lastEventDate = eventInfo.DueDate.Date;
+                lastEventDate = eventInfo.event_date.Date;
                 useBlueBackground = !useBlueBackground;
 
                 var detailsGrid = new Grid
@@ -128,13 +168,13 @@ namespace Calendar
                 };
                 TapGestureRecognizer tapGestureEvent = new TapGestureRecognizer
                 {
-                    Command = new Command(() => FunctionsLib.OnEventTapped(eventInfo.Id))
+                    Command = new Command(() => FunctionsLib.OnEventTapped(eventInfo.event_id))
                 };
                 detailsGrid.GestureRecognizers.Add(tapGestureEvent);
                 //event name
                 var nameLabel = new Label
                 {
-                    Text = eventInfo.Name,
+                    Text = eventInfo.event_name,
                     FontAttributes = FontAttributes.Bold,
                     Margin = new Thickness(0, 0, 0, 2),
                     FontFamily = "Inter",
@@ -146,7 +186,7 @@ namespace Calendar
                 detailsGrid.Children.Add(nameLabel);
 
                 //description
-                var subjectName = _subjects.FirstOrDefault(s => s.Id == eventInfo.SubjectId)?.Name ?? "Unknown Subject";
+                var subjectName = _subjects.FirstOrDefault(s => s.Id == eventInfo.subject_id)?.Name ?? "Unknown Subject";
                 var subjectLabel = new Label
                 {
                     Text = subjectName,
