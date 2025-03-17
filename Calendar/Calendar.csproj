@@ -96,6 +96,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="CreateClass.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="DatePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

@@ -20,19 +20,20 @@
             Padding="10"
             >
 
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="15"/>
-                    </Border.StrokeShape>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
 
-                    <Button x:Name="CreateEventButton"
-            Text="Create event"
-            ImageSource="create_plus_icon.png"
-            HeightRequest="45"
-            FontFamily="Inter"
-            FontSize="18"
-            FontAttributes="Bold"
-            Clicked="CreateEventButton_Clicked"
-            BackgroundColor="Transparent"/>
+            <Button x:Name="CreateEventButton"
+                Text="Create event"
+                ImageSource="create_plus_icon.png"
+                ContentLayout="Right"
+                HeightRequest="45"
+                FontFamily="Inter"
+                FontSize="18"
+                FontAttributes="Bold"
+                Clicked="CreateEventButton_Clicked"
+                BackgroundColor="Transparent"/>
         </Border>
 
     </StackLayout>

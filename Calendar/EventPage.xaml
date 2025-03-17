@@ -15,16 +15,41 @@
     <StackLayout Padding="20">
         <Label x:Name="EventNameLabel" FontSize="30" FontAttributes="Bold" TextColor="#4F5171" FontFamily="Inter" HorizontalOptions="Start" />
         <Label x:Name="DateLabel" FontSize="18" HorizontalOptions="Start" TextColor="#4F5171" FontFamily="Inter" Margin="0,0,0,20"/>
-        <Button x:Name="EditButton"
-        HeightRequest="50"
-        Clicked="EditButton_Clicked"
-        Text="Edit"
+
+        <Border
+        x:Name="EditButton"
+        BackgroundColor="#4F5171"
+        HorizontalOptions="Start"
+        StrokeThickness="1"
+        Margin="0,0,0,10"
+        HeightRequest="35"
         IsEnabled="False"
         IsVisible="False"
-        FontFamily="Inter"
-        FontAttributes="Bold"
-        TextColor="#4F5171"
-        BackgroundColor="Transparent"/>
+        >
+            <Border.Background>
+                <LinearGradientBrush EndPoint="1,0">
+                    <GradientStop Color="#5E52A0"
+                    Offset="0" />
+                    <GradientStop Color="#8E80DE"
+                    Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30"/>
+            </Border.StrokeShape>
+
+            <Button 
+            Clicked="EditButton_Clicked"
+            Text="Edit"
+            FontFamily="Inter"
+            FontAttributes="Bold"
+            FontSize="16"
+            TextColor="White"
+            Padding="40,0"
+            BackgroundColor="Transparent">
+            </Button>
+        </Border>
         <Border
             BackgroundColor="#4F5171"
             Stroke="#4F5171"

@@ -85,6 +85,7 @@ TextColor="#4F5171" Margin="0,5,0,0" />
                 <Button x:Name="CreateEventButton"
                 Text="Create event"
                 ImageSource="create_plus_icon.png"
+                ContentLayout="Right"
                 HeightRequest="45"
                 FontFamily="Inter"
                 FontSize="18"

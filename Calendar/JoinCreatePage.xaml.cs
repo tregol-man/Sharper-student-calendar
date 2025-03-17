@@ -10,7 +10,7 @@ public partial class JoinCreatePage : ContentPage
     private UserData _user;
     public JoinCreatePage()
 	{
-		InitializeComponent();
+        InitializeComponent();
 	}
     private void OnCreateGroupClick(object sender, EventArgs e)
     {
@@ -71,5 +71,10 @@ public partial class JoinCreatePage : ContentPage
             _group = null;
             _subjects = new List<SubjectData>();
         }
+    }
+
+    private void ForNow(object sender, EventArgs e)
+    {
+        Application.Current.MainPage = new CreateClass();
     }
 }

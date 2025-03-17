@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Calendar.CreateClass"
+             Title="CreateClass">
+
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+              Offset="0" />
+            <GradientStop Color="#D6D7F4"
+            Offset="0.2" />
+            <GradientStop Color="#8587DE"
+              Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
+
+    <VerticalStackLayout
+        Padding="20, 20"
+        >
+        <Label
+            Text="Class Name:"
+            FontSize="22" 
+            FontAttributes="Bold" 
+            TextColor="#4F5171" 
+            FontFamily="Inter"
+            Margin="0,5"
+            />
+        <Border
+            BackgroundColor="White"
+            Stroke="Transparent"
+            Margin="0,5,0,20"
+            >
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20"/>
+            </Border.StrokeShape>
+
+            <Entry
+                x:Name="ClassNameEntry"
+                FontSize="18" 
+                TextColor="#4F5171" 
+                FontFamily="Inter"
+                Margin="0,5"
+                />
+        </Border>
+
+        <Border
+            Padding="10,10"
+            Margin="0,5,0,10"
+            >
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
+
+            <Border.Background>
+
+                <LinearGradientBrush EndPoint="1,0">
+                    <GradientStop Color="#8E80DE"
+                             Offset="0" />
+                    <GradientStop Color="#4F5171"
+                             Offset="1" />
+                </LinearGradientBrush>
+
+            </Border.Background>
+
+
+            <VerticalStackLayout
+                >
+                <Grid
+                    HeightRequest="30"
+                    >
+                    <Label
+                        Text="Add Subject"
+                        HorizontalOptions="Start"
+                         FontSize="18" 
+                         FontAttributes="Bold" 
+                         TextColor="White" 
+                         FontFamily="Inter"
+                        />
+
+                    <ImageButton
+                        Source="create_plus_icon.png"
+                        HorizontalOptions="End"
+                        HeightRequest="30"
+                        TranslationX="20"
+                        Clicked="OnClickCreateSubject"
+                        />
+                </Grid>
+
+                <Label
+                    Text="Name:"
+                    FontSize="16" 
+                    FontAttributes="Bold" 
+                    TextColor="White" 
+                    FontFamily="Inter"
+                    Margin="0,5"
+                    />
+                <Border
+                    Background="White"
+                    Margin="0,5"
+                    Stroke="Transparent"
+                    >
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"/>
+                    </Border.StrokeShape>
+
+                    <Entry
+                    x:Name="SubjectNameEntry"
+                    />
+                </Border>
+                
+                
+               <!-- <Label
+                    Text="Color:"
+                    FontSize="16" 
+                    FontAttributes="Bold" 
+                    TextColor="White" 
+                    FontFamily="Inter"
+                    Margin="0,5"
+                    /> -->
+            </VerticalStackLayout>
+        </Border>
+        <Label
+            Text="Subjects:"
+            FontSize="22" 
+            FontAttributes="Bold" 
+            TextColor="#4F5171" 
+            FontFamily="Inter"
+            Margin="0,5"
+            />
+        <VerticalStackLayout
+            x:Name="SubjectList"
+            Margin="0,10"
+            >
+            <Border
+                Background="#FF8080"
+                HeightRequest="90"
+                >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20"/>
+                </Border.StrokeShape>
+
+                <Grid
+                    Padding="30, 20"
+                    >
+
+                    <Label
+                        Text="Subject"
+                        VerticalOptions="Center"
+                        FontSize="20" 
+                        FontAttributes="Bold" 
+                        TextColor="White" 
+                        FontFamily="Inter"
+                        />
+
+                    <ImageButton
+                        Source="cross_icon.png"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        TranslationX="20"
+                        />
+
+                </Grid>
+
+            </Border>
+        </VerticalStackLayout>
+
+        <Button
+            Text="Continue"
+            FontSize="22" 
+            FontAttributes="Bold" 
+            FontFamily="Inter"
+            Background="#4F5171"
+            Clicked="ConfirmChanges"
+            />
+    </VerticalStackLayout>
+</ContentPage>

@@ -3,47 +3,84 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.JoinCreatePage"
              Title="JoinCreatePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Border BackgroundColor="White" VerticalOptions="Center">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+                  Offset="0" />
+            <GradientStop Color="#8587DE"
+                  Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
+    <VerticalStackLayout
+        Padding="20, 0"
+        VerticalOptions="Center">
+        <Border BackgroundColor="#4F5171" VerticalOptions="Center" Margin="0, 5">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="15"/>
             </Border.StrokeShape>
             <Button x:Name="CreateGroupButton"
-            HeightRequest="50"
+            HeightRequest="45"
             Clicked="OnCreateGroupClick"
+            ImageSource="create_plus_icon.png"
+            ContentLayout="Right, 10"
             Text="Create Group"
             FontFamily="Inter"
+            FontSize="18"
             FontAttributes="Bold"
-            TextColor="#4F5171"
-            BackgroundColor="Transparent"/>
+            TextColor="White"
+            BackgroundColor="Transparent"
+            />
         </Border>
 
-        <Border BackgroundColor="White" VerticalOptions="Center">
+        <Border BackgroundColor="#4F5171" VerticalOptions="Center" Margin="0, 5">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="15"/>
             </Border.StrokeShape>
             <Button x:Name="JoinGroupButton"
-            HeightRequest="50"
+            HeightRequest="45"
             Clicked="OnJoinGroupClick"
             Text="Join Group"
+            ImageSource="join_class_icon.png"
+            ContentLayout="Right, 10"
+            FontSize="18"
+            FontFamily="Inter"
+            FontAttributes="Bold"
+            TextColor="White"
+            BackgroundColor="Transparent"/>
+        </Border>
+        <Border BackgroundColor="White" VerticalOptions="Center" Margin="0, 5">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
+            <Button x:Name="LogOutButton"
+            HeightRequest="45"
+            Clicked="OnLogOutClick"
+            ImageSource="log_out_icon.png"
+            ContentLayout="Right, 10"
+            Text="Log Out"
+            FontSize="18"
             FontFamily="Inter"
             FontAttributes="Bold"
             TextColor="#4F5171"
             BackgroundColor="Transparent"/>
         </Border>
-        <Border BackgroundColor="White" VerticalOptions="Center">
-            <Button x:Name="LogOutButton"
-        HeightRequest="50"
-        Clicked="OnLogOutClick"
-        Text="Log Out"
-        FontFamily="Inter"
-        FontAttributes="Bold"
-        TextColor="#4F5171"
-        BackgroundColor="Transparent"/>
+        <Border BackgroundColor="White" VerticalOptions="Center" Margin="0, 5">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
+            <Button x:Name="Test"
+            HeightRequest="45"
+            Clicked="ForNow"
+            ImageSource="log_out_icon.png"
+            ContentLayout="Right, 10"
+            Text="For Now TestCreate"
+            FontSize="18"
+            FontFamily="Inter"
+            FontAttributes="Bold"
+            TextColor="#4F5171"
+            BackgroundColor="Transparent"/>
         </Border>
     </VerticalStackLayout>
 </ContentPage>
