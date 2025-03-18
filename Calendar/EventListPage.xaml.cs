@@ -101,11 +101,16 @@ namespace Calendar
 
                 if (currentHeader != lastHeader)
                 {
+                    var eventBackgroundColor = Colors.White;
                     lastHeader = currentHeader;
-
+                    if (!sortByDate)
+                    {
+                        var subject = _subjects.FirstOrDefault(s => s.Id == eventInfo.subject_id);
+                        eventBackgroundColor = FunctionsLib.GetColorFromSubject(subject?.Hue ?? 0);
+                    }
                     Border headerBorder = new Border
                     {
-                        BackgroundColor = Colors.White,
+                        BackgroundColor = eventBackgroundColor,
                         StrokeShape = new RoundRectangle
                         {
                             CornerRadius = 15

@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:Calendar"
     FlyoutBehavior="Flyout"
     Title="Calendar"
-    Shell.ForegroundColor="Purple"
+    Shell.ForegroundColor="#4F5171"
     Shell.BackgroundColor="White"
     Shell.FlyoutBackground="#4F5171">
     <!-- Flyout Header -->

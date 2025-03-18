@@ -325,6 +325,61 @@ public static class FunctionsLib
             return responseData?.data ?? -1; // Return deleted group ID, or -1 if failed
         }
     }
+    public static List<UserData> GetGroupMembers(int groupId)
+    {
+        using (HttpClient client = CreateAuthorizedClient())
+        {
+            if (client == null) return null;
+
+            string url = $"{baseURL}group/{groupId}/members";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"Error retrieving group members: {response.StatusCode} - {response.ReasonPhrase}");
+                return null;
+            }
+
+            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
+            return responseData?.data?.ToObject<List<UserData>>();
+        }
+    }
+    public static int UpdateSubject(int groupId, int subjectId, SubjectData updatedSubject)
+    {
+        using (HttpClient client = CreateAuthorizedClient())
+        {
+            if (client == null) return -1;
+
+            string url = $"{baseURL}group/{groupId}/subject/{subjectId}";
+
+            var requestData = new
+            {
+                name = updatedSubject.Name,
+                hue = updatedSubject.Hue
+            };
+
+            string json = JsonConvert.SerializeObject(requestData);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"Error updating subject: {response.StatusCode} - {response.ReasonPhrase}");
+                return -1;
+            }
+
+            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
+            return responseData?.data ?? -1; // Return updated subject ID or -1 on failure
+        }
+    }
     public static int LeaveGroup(int groupId)
     {
         using (HttpClient client = CreateAuthorizedClient())
@@ -347,6 +402,26 @@ public static class FunctionsLib
 
             var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
             return responseData?.data ?? -1; // Return group ID or -1 if failed
+        }
+    }
+    public static int KickFromGroup(int groupId, int userId)
+    {
+        using (HttpClient client = CreateAuthorizedClient())
+        {
+            if (client == null) return -1;
+
+            string url = $"{baseURL}group/{groupId}/members/{userId}";
+            HttpResponseMessage response = client.DeleteAsync(url).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"Error kicking user from group: {response.StatusCode} - {response.ReasonPhrase}");
+                return -1;
+            }
+
+            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
+            return responseData?.data ?? -1;
         }
     }
     public static UserData GetUserData()
@@ -431,6 +506,26 @@ public static class FunctionsLib
 
             var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
             return responseData?.data ?? -1; // Return event ID if successful, otherwise -1
+        }
+    }
+    public static int DeleteEvent(int groupId, int eventId)
+    {
+        using (HttpClient client = CreateAuthorizedClient())
+        {
+            if (client == null) return -1;
+
+            string url = $"{baseURL}group/{groupId}/event/{eventId}";
+            HttpResponseMessage response = client.DeleteAsync(url).Result;
+            string responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"Error deleting event: {response.StatusCode} - {response.ReasonPhrase}");
+                return -1;
+            }
+
+            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
+            return responseData?.data ?? -1;
         }
     }
     public static List<Calendar.EventInfo> LoadMonthEvents(DateTime first, DateTime last, int id)
@@ -674,13 +769,15 @@ public static class FunctionsLib
     }
     public static Color GetColorFromSubject(int hue)
     {
-        // Convert the Hue to a color and combine the HSV to RGB conversion in one method
-        float h = hue / 360f; // Hue is typically in the range of 0 to 360
-        int hInt = (int)(h * 6); // Hue in range [0, 6)
+        float saturation = 0.5f; // Reduce saturation to 50%
+
+        float h = hue / 360f; // Normalize hue to range [0,1]
+        int hInt = (int)(h * 6); // Convert hue to sector index [0,6)
         float f = h * 6 - hInt; // Fractional part of hue
-        float p = 1f * (1 - 1f); // Full saturation and brightness (value = 1)
-        float q = 1f * (1 - f * 1f);
-        float t = 1f * (1 - (1 - f) * 1f);
+
+        float p = 1f * (1 - saturation);
+        float q = 1f * (1 - f * saturation);
+        float t = 1f * (1 - (1 - f) * saturation);
 
         float r = 0, g = 0, b = 0;
 

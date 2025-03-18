@@ -17,6 +17,9 @@
                                 FontAttributes="Bold"
                                 FontSize="18"
                                 />
+                            <Button.BackgroundColor>
+                                <Binding Path="ButtonColor" />
+                            </Button.BackgroundColor>
                     </Border>
                     
                 </DataTemplate>

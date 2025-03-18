@@ -78,6 +78,8 @@ public partial class EventPage : ContentPage, IQueryAttributable
                 {
                     EditButton.IsEnabled = true;
                     EditButton.IsVisible = true;
+                    DeleteButton.IsEnabled = true;
+                    DeleteButton.IsVisible = true;
                 }
             }
             catch (Exception ex)
@@ -101,5 +103,12 @@ public partial class EventPage : ContentPage, IQueryAttributable
                                   $"&subjectId={_currentEvent.subject_id}";
 
         Shell.Current.GoToAsync(navigationParams);
+    }
+    private void DeleteButton_Clicked(object sender, EventArgs e)
+    {
+        Console.WriteLine("delete");
+        if(FunctionsLib.DeleteEvent(_group.group_id, _currentEvent.event_id) != -1){
+            Shell.Current.GoToAsync("..");
+        }
     }
 }

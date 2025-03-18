@@ -197,12 +197,14 @@ namespace Calendar
                 // Add events to the grid with smaller font and text truncation
                 if (eventsForDay.Count > 0)
                 {
+                    var subject = _subjects.FirstOrDefault(s => s.Id == eventsForDay[0].subject_id);
+                    var eventBackgroundColor = FunctionsLib.GetColorFromSubject(subject.Hue);
                     Label eventLabel1 = new Label
                     {
                         Text = eventsForDay[0].event_name.Length > 10 ? eventsForDay[0].event_name.Substring(0, 10) + "..." : eventsForDay[0].event_name,
                         FontSize = 12, // Smaller font size for events
                         FontFamily = "Inter",
-                        BackgroundColor = Colors.White,
+                        BackgroundColor = eventBackgroundColor,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Center,
                     };
@@ -211,12 +213,14 @@ namespace Calendar
 
                     if (eventsForDay.Count == 2)
                     {
+                        subject = _subjects.FirstOrDefault(s => s.Id == eventsForDay[1].subject_id);
+                        eventBackgroundColor = FunctionsLib.GetColorFromSubject(subject.Hue);
                         Label eventLabel2 = new Label
                         {
                             Text = eventsForDay[1].event_name.Length > 10 ? eventsForDay[1].event_name.Substring(0, 10) + "..." : eventsForDay[1].event_name,
                             FontSize = 12,
                             FontFamily = "Inter",
-                            BackgroundColor = Colors.LightBlue,
+                            BackgroundColor = eventBackgroundColor,
                             HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Center,
                         };
