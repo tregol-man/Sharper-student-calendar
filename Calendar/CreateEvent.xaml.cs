@@ -23,18 +23,29 @@ namespace Calendar
         {
             if (query.TryGetValue("date", out var dateString))
                 DateButton.Text = dateString.ToString();
+
             if (query.TryGetValue("eventId", out var id))
             {
                 _eventId = Convert.ToInt32(id);
                 EventNameLabel.Text = "Edit event";
+
                 if (query.TryGetValue("name", out var name))
                     EventNameEntry.Text = Uri.UnescapeDataString(name.ToString());
+
                 if (query.TryGetValue("description", out var description))
                     EventDetailsEditor.Text = Uri.UnescapeDataString(description.ToString());
 
                 if (query.TryGetValue("subjectId", out var subjectIdStr) && int.TryParse(subjectIdStr.ToString(), out int subjectId))
                 {
-                    SubjectsButton.Text = _subjects.FirstOrDefault(s => s.Id == subjectId)?.Name ?? "Unknown Subject";
+                    var subject = _subjects.FirstOrDefault(s => s.Id == subjectId);
+                    SubjectsButton.Text = subject?.Name ?? "Unknown Subject";
+
+                    // Set the color of the SubjectsButton based on the selected subject
+                    if (subject != null)
+                    {
+                        var subjectColor = FunctionsLib.GetColorFromSubject(subject.Hue);
+                        SubjectsButton.BackgroundColor = subjectColor;
+                    }
                 }
             }
         }
@@ -97,9 +108,9 @@ namespace Calendar
 
             // Append the existing subjects to the new list
              if (_subjects != null)
-    {
-        subjectsWithUntagged.AddRange(_subjects); // Add the subjects to the list if not null
-    }
+             {
+                subjectsWithUntagged.AddRange(_subjects); // Add the subjects to the list if not null
+             }
 
             // Convert the updated list to an ObservableCollection
             ObservableCollection<SubjectData> SubjectsCollection = new ObservableCollection<SubjectData>(subjectsWithUntagged);
@@ -110,6 +121,8 @@ namespace Calendar
                 if (args.Result is SubjectData selectedSubject)
                 {
                     SubjectsButton.Text = selectedSubject.Name;
+                    var subjectColor = FunctionsLib.GetColorFromSubject(selectedSubject.Hue);
+                    SubjectsButton.BackgroundColor = subjectColor;
                 }
             };
 

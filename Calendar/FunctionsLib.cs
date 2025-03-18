@@ -672,4 +672,29 @@ public static class FunctionsLib
         Debug.WriteLine("Redirecting user to login...");
         Application.Current.MainPage = new LoginPage();
     }
+    public static Color GetColorFromSubject(int hue)
+    {
+        // Convert the Hue to a color and combine the HSV to RGB conversion in one method
+        float h = hue / 360f; // Hue is typically in the range of 0 to 360
+        int hInt = (int)(h * 6); // Hue in range [0, 6)
+        float f = h * 6 - hInt; // Fractional part of hue
+        float p = 1f * (1 - 1f); // Full saturation and brightness (value = 1)
+        float q = 1f * (1 - f * 1f);
+        float t = 1f * (1 - (1 - f) * 1f);
+
+        float r = 0, g = 0, b = 0;
+
+        switch (hInt % 6)
+        {
+            case 0: r = 1f; g = t; b = p; break;
+            case 1: r = q; g = 1f; b = p; break;
+            case 2: r = p; g = 1f; b = t; break;
+            case 3: r = p; g = q; b = 1f; break;
+            case 4: r = t; g = p; b = 1f; break;
+            case 5: r = 1f; g = p; b = q; break;
+        }
+
+        return Color.FromRgb(r, g, b); // Return the RGB color
+    }
+
 }

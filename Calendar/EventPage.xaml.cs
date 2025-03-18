@@ -65,11 +65,14 @@ public partial class EventPage : ContentPage, IQueryAttributable
 
                 // Fetch the subject name
                 var subjectName = _subjects.FirstOrDefault(s => s.Id == _currentEvent.subject_id)?.Name ?? "Unknown Subject";
-
+                var subjectHue = _subjects.FirstOrDefault(s => s.Id == _currentEvent.subject_id)?.Hue ?? 0; // Default to 0 if not found
+                var subjectColor = FunctionsLib.GetColorFromSubject(subjectHue);
                 // Update the labels with event details
                 EventNameLabel.Text = _currentEvent.event_name;
                 DateLabel.Text = $"Due date: {_currentEvent.event_date.ToShortDateString()}";
                 SubjectLabel.Text = subjectName;
+                Console.WriteLine(subjectColor);
+                SubjectBorder.Background = subjectColor;
                 EventDetailsLabel.Text = _currentEvent.event_description;
                 if (_currentEvent.creator_id == _user.user_id || _group.level > 1)
                 {
