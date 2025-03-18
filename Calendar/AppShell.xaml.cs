@@ -13,6 +13,8 @@ namespace Calendar
             Routing.RegisterRoute("createevent", typeof(CreateEvent));
             Routing.RegisterRoute("LoginPage", typeof(LoginPage));
             Routing.RegisterRoute("JoinCreatePage", typeof(JoinCreatePage));
+            Routing.RegisterRoute("adminPage", typeof(Administration));
+            Routing.RegisterRoute("createClassPage", typeof(CreateClass));
         }
     }
 }

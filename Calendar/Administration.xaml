@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Calendar.Administration"
+             Title="Administration">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+                  Offset="0" />
+            <GradientStop Color="#8587DE"
+                  Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <FlexLayout>
+            <Image Source="admin_black_icon.png" Scale=".5"/>
+            <Label
+                Text="Administration"
+                FontFamily="Inter"
+                TextColor="#4F5171"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1" 
+                VerticalOptions="Center"
+                FontAttributes="Bold"
+                />
+        </FlexLayout>
+
+        <Border
+            BackgroundColor="White"
+            Padding="10"
+            Margin="0,0,0,10"
+            >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
+
+            <VerticalStackLayout>
+                <Label
+                    Text="Class code:"
+                    FontFamily="Inter"
+                    TextColor="#4F5171"
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    Margin="0,10"
+                    HorizontalOptions="Center"/>
+                <Button
+                    x:Name="ClassCodeButton"
+                    Clicked="OnCopyCodeClick"
+                    Background="Transparent"
+                    FontFamily="Inter"
+                    TextColor="#4F5171"
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    ImageSource="copy_icon.png"
+                    ContentLayout="Right, 10"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    />
+            </VerticalStackLayout>
+        </Border>
+
+        <Border BackgroundColor="#4F5171" VerticalOptions="Center"
+                IsEnabled="False"
+                IsVisible="False">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="15"/>
+            </Border.StrokeShape>
+            <Button x:Name="EditButton"
+                HeightRequest="70"
+                Clicked="OnEditGroupClick"
+                Text="Edit Group"
+                FontFamily="Inter"
+                FontAttributes="Bold"
+                FontSize="18"
+                TextColor="White"
+                ImageSource="edit_icon.png"
+                ContentLayout="Right, 10"
+                Padding="0, 20"
+                BackgroundColor="Transparent"
+                />
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>
