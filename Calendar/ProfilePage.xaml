@@ -3,56 +3,118 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calendar.ProfilePage"
              Title="Profile">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+                      Offset="0" />
+            <GradientStop Color="#8587DE"
+                      Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
-            <Border BackgroundColor="White" VerticalOptions="Center">
-                <Button x:Name="LogOutButton"
-            HeightRequest="50"
-            Clicked="OnLogOutClick"
-            Text="Log Out"
-            FontFamily="Inter"
-            FontAttributes="Bold"
-            TextColor="#4F5171"
-            BackgroundColor="Transparent"/>
+            <FlexLayout>
+                <Image Source="setting_icon.png" Scale=".5"/>
+                <Label
+                    Text="Settings"
+                    FontFamily="Inter"
+                    TextColor="#4F5171"
+                    Style="{StaticResource Headline}"
+                    SemanticProperties.HeadingLevel="Level1" 
+                    VerticalOptions="Center"
+                    FontAttributes="Bold"
+                    />
+            </FlexLayout>
+
+            <Border BackgroundColor="#4F5171" VerticalOptions="Center" x:Name="CreateSubjectButton">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/>
+                </Border.StrokeShape>
+                <Button 
+                    HeightRequest="70"
+                    Clicked="OnCreateSubjectClick"
+                    Text="Create Subject"
+                    FontFamily="Inter"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    TextColor="White"
+                    ImageSource="create_plus_icon.png"
+                    ContentLayout="Right, 10"
+                    Padding="0, 20"
+                    BackgroundColor="Transparent"/>
             </Border>
+
+            <Border BackgroundColor="#4F5171" VerticalOptions="Center" x:Name="AdministrationButton">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15"/>
+                </Border.StrokeShape>
+                <Button 
+                    HeightRequest="70"
+                    Clicked="OnAdministrationClick"
+                    Text="Administration"
+                    FontFamily="Inter"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    TextColor="White"
+                    ImageSource="admin_icon.png"
+                    ContentLayout="Right, 10"
+                    Padding="0, 20"
+                    BackgroundColor="Transparent"/>
+            </Border>
+
             <Border BackgroundColor="White" VerticalOptions="Center">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="15"/>
                 </Border.StrokeShape>
-                <Button x:Name="CreateSubjectButton"
-            HeightRequest="50"
-            Clicked="OnCreateSubjectClick"
-            Text="Create Subject"
-            FontFamily="Inter"
-            FontAttributes="Bold"
-            TextColor="#4F5171"
-            BackgroundColor="Transparent"/>
+                <Button x:Name="LogOutButton"
+                    HeightRequest="70"
+                    Clicked="OnLogOutClick"
+                    Text="Log Out"
+                    FontFamily="Inter"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="#4F5171"
+                    ImageSource="log_out_icon.png"
+                    ContentLayout="Right, 10"
+                    Padding="0, 20"
+                    BackgroundColor="Transparent"/>
             </Border>
+            
             <Border BackgroundColor="White" VerticalOptions="Center">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="15"/>
                 </Border.StrokeShape>
                 <Button x:Name="LeaveGroupButton"
-                HeightRequest="50"
-                Clicked="OnLeaveGroupClick"
-                Text="Leave Group"
-                FontFamily="Inter"
-                FontAttributes="Bold"
-                TextColor="#4F5171"
-                BackgroundColor="Transparent"/>
+                    HeightRequest="70"
+                    Clicked="OnLeaveGroupClick"
+                    Text="Leave Group"
+                    FontFamily="Inter"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="#4F5171"
+                    ImageSource="leave_icon.png"
+                    ContentLayout="Right, 10"
+                    Padding="0, 20"
+                    BackgroundColor="Transparent"/>
             </Border>
-            <Border BackgroundColor="White" VerticalOptions="Center">
+            <Border BackgroundColor="White" VerticalOptions="Center" x:Name="DeleteGroupButton">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="15"/>
                 </Border.StrokeShape>
-                <Button x:Name="DeleteGroupButton"
-                HeightRequest="50"
-                Clicked="OnDeleteGroupClick"
-                Text="Delete Group"
-                FontFamily="Inter"
-                FontAttributes="Bold"
-                TextColor="#4F5171"
-                BackgroundColor="Transparent"/>
+                <Button 
+                    HeightRequest="70"
+                    Clicked="OnDeleteGroupClick"
+                    Text="Delete Group"
+                    FontFamily="Inter"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="#4F5171"
+                    ImageSource="delete_icon.png"
+                    ContentLayout="Right, 10"
+                    Padding="0, 20"
+                    BackgroundColor="Transparent"/>
             </Border>
         </VerticalStackLayout>
     </ScrollView>

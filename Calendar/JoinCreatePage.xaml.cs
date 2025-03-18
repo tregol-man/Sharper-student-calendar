@@ -12,7 +12,7 @@ public partial class JoinCreatePage : ContentPage
 	{
         InitializeComponent();
 	}
-    private void OnCreateGroupClick(object sender, EventArgs e)
+    /*private void OnCreateGroupClick(object sender, EventArgs e)
     {
         UpdateUser();
         string groupName = "Test Group"; // Change this to dynamically enter a name if needed
@@ -23,19 +23,21 @@ public partial class JoinCreatePage : ContentPage
         {
             Application.Current.MainPage = new AppShell();
         }
-    }
+    }*/
 
     private void OnJoinGroupClick(object sender, EventArgs e)
     {
-        UpdateUser();
+
+        Application.Current.MainPage = new JoinGroup();
+
+        /* UpdateUser();
         string groupCode = FunctionsLib.GetGroupCode(1);
         Console.WriteLine(FunctionsLib.JoinGroup(groupCode));
         UpdateUser();
         if (_user.groups != null && _user.groups.Count > 0)
         {
             Application.Current.MainPage = new AppShell();
-        }
-
+        }*/
     }
     private void OnLogOutClick(object sender, EventArgs e)
     {
@@ -43,7 +45,7 @@ public partial class JoinCreatePage : ContentPage
         FunctionsLib.LogoutUser();
         UpdateUser();
     }
-    private void UpdateUser()
+    private void UpdateUser(int groupId = 0)
     {
         _user = FunctionsLib.GetUserData();
         if (_user == null)
@@ -51,10 +53,10 @@ public partial class JoinCreatePage : ContentPage
             Console.WriteLine("Failed to fetch user data.");
             return;
         }
-        Debug.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+        Console.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
         if (_user.groups != null && _user.groups.Count > 0)
         {
-            _group = _user.groups[0];
+            _group = _user.groups[groupId];
             if (_group.group_id != -1)
             {
                 Console.WriteLine("Group set properly: " + _group.group_id);
@@ -73,7 +75,7 @@ public partial class JoinCreatePage : ContentPage
         }
     }
 
-    private void ForNow(object sender, EventArgs e)
+    private void OnCreateGroupClick(object sender, EventArgs e)
     {
         Application.Current.MainPage = new CreateClass();
     }

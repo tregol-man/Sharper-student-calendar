@@ -33,7 +33,7 @@
                    Margin="10,0,0,0"/>
 
             </Border>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" Margin="0,0,0,20">
+            <Grid Margin="0,0,0,20">
 
                 <Border
                     BackgroundColor="#4F5171"
@@ -102,7 +102,7 @@
                             Padding="20,5"/>
                 </Border>
 
-            </StackLayout>
+            </Grid>
             <Border
             BackgroundColor="#4F5171"
             Stroke="#4F5171"
@@ -113,25 +113,6 @@
                     <RoundRectangle CornerRadius="15"/>
                 </Border.StrokeShape>
                 <StackLayout>
-                    <Border
-                    Stroke="Transparent"
-                    Margin="0,0,0,10"
-                    >
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="15"/>
-                        </Border.StrokeShape>
-                        <Border.Background>
-                            <LinearGradientBrush EndPoint="1,0">
-                                <GradientStop Color="#5E52A0"
-                                        Offset="0" />
-                                <GradientStop Color="#8E80DE"
-                                        Offset="1" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-
-                        <Label x:Name="SubjectLabel" FontSize="18" HorizontalOptions="Center" FontFamily="Inter" TextColor="White"/>
-                    </Border>
-
                     <Border 
                         BackgroundColor="#979BE1"
                         >

@@ -96,6 +96,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Administration.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="CreateClass.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -107,6 +110,9 @@
 		</MauiXaml>
 		<MauiXaml Update="EventListPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="JoinGroup.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="LoginPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>

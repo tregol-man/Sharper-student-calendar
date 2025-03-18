@@ -19,6 +19,8 @@ namespace Calendar
                 DeleteGroupButton.IsVisible = true;
                 CreateSubjectButton.IsEnabled = true;
                 DeleteGroupButton.IsEnabled = true;
+                AdministrationButton.IsEnabled = true;
+                AdministrationButton.IsVisible = true;
             }
             else
             {
@@ -26,6 +28,8 @@ namespace Calendar
                 DeleteGroupButton.IsVisible = false;
                 CreateSubjectButton.IsEnabled = false;
                 DeleteGroupButton.IsEnabled = false;
+                AdministrationButton.IsEnabled = true;
+                AdministrationButton.IsVisible = true;
             }
         }
         private void OnLogOutClick(object sender, EventArgs e)
@@ -39,6 +43,10 @@ namespace Calendar
             UpdateUser();
             Console.WriteLine(FunctionsLib.CreateSubject(_group.group_id, "math", 100));
             UpdateUser();
+        }
+        private void OnAdministrationClick(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("adminPage");
         }
         private void OnLeaveGroupClick(object sender, EventArgs e)
         {
@@ -54,7 +62,7 @@ namespace Calendar
             UpdateUser();
             Application.Current.MainPage = new JoinCreatePage();
         }
-        private void UpdateUser()
+        private void UpdateUser(int groupId = 0)
         {
             _user = FunctionsLib.GetUserData();
             if (_user == null)
@@ -62,10 +70,10 @@ namespace Calendar
                 Console.WriteLine("Failed to fetch user data.");
                 return;
             }
-            Debug.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+            Console.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
             if (_user.groups != null && _user.groups.Count > 0)
             {
-                _group = _user.groups[0];
+                _group = _user.groups[groupId];
                 if (_group.group_id != -1)
                 {
                     Console.WriteLine("Group set properly: " + _group.group_id);

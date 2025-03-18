@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Calendar.JoinGroup"
+             Title="JoinGroup">
+    <ContentPage.Background>
+
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="white"
+              Offset="0" />
+            <GradientStop Color="#8587DE"
+              Offset="1" />
+        </LinearGradientBrush>
+
+    </ContentPage.Background>
+    
+    <VerticalStackLayout
+        Padding="20, 0"
+        Spacing="10"
+        VerticalOptions="Center">
+        <Label
+            Text="Enter code:"
+            FontSize="22" 
+            FontAttributes="Bold" 
+            TextColor="#4F5171" 
+            FontFamily="Inter"
+            Margin="0,5"/>
+        <HorizontalStackLayout Spacing="1">
+            <Border
+                Background="White"
+                WidthRequest="300"
+                >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20"/>
+                </Border.StrokeShape>
+                <Entry
+                    x:Name="GroupCodeEntry"
+                    FontSize="18" 
+                    TextColor="#4F5171" 
+                    FontFamily="Inter"
+                    Margin="5,0"/>
+            </Border>
+            <Border
+                WidthRequest="80">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20"/>
+                </Border.StrokeShape>
+
+                <Border.Background>
+
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Color="#8E80DE"
+                         Offset="0" />
+                        <GradientStop Color="#4F5171"
+                        Offset="1" />
+                    </LinearGradientBrush>
+
+                </Border.Background>
+                
+                <Button
+                    BackgroundColor="Transparent"
+                    Clicked="OnJoinGroupClick"
+                    Text="Join"
+                    FontSize="20" 
+                    FontAttributes="Bold" 
+                    TextColor="White" 
+                    FontFamily="Inter"
+                    />
+            </Border>
+            
+        </HorizontalStackLayout>
+        <Label
+            Text="You can get the code from your group admin"
+            WidthRequest="300"
+            FontSize="18" 
+            HorizontalOptions="Start"
+            FontAttributes="Bold" 
+            TextColor="#4F5171" 
+            FontFamily="Inter"
+            Margin="0,5"/>
+    </VerticalStackLayout>
+</ContentPage>

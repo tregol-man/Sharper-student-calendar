@@ -7,7 +7,8 @@
     FlyoutBehavior="Flyout"
     Title="Calendar"
     Shell.ForegroundColor="Purple"
-    Shell.BackgroundColor="White">
+    Shell.BackgroundColor="White"
+    Shell.FlyoutBackground="#4F5171">
     <!-- Flyout Header -->
     
     <Shell.FlyoutHeader>
@@ -25,14 +26,14 @@
     </Shell.TitleView>
     
     <!-- Flyout Items -->
-    <Shell.FlyoutBackground>
+   <!-- <Shell.FlyoutBackground>
         <LinearGradientBrush EndPoint="1,0">
             <GradientStop Color="#8E80DE"
                           Offset="0"/>
             <GradientStop Color="#5E52A0"
                           Offset="1"/>
-        </LinearGradientBrush>
-    </Shell.FlyoutBackground>
+        </LinearGradientBrush> 
+    </Shell.FlyoutBackground>-->
     
     <FlyoutItem Title="Calendar">
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>

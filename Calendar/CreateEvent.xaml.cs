@@ -129,7 +129,7 @@ namespace Calendar
             };
             Shell.Current.ShowPopup(datePickerPopup);
         }
-        private void UpdateUser()
+        private void UpdateUser(int groupId = 0)
         {
             _user = FunctionsLib.GetUserData();
             if (_user == null)
@@ -137,10 +137,10 @@ namespace Calendar
                 Console.WriteLine("Failed to fetch user data.");
                 return;
             }
-            Debug.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
+            Console.WriteLine($"User data: {JsonConvert.SerializeObject(_user, Formatting.Indented)}");
             if (_user.groups != null && _user.groups.Count > 0)
             {
-                _group = _user.groups[0];
+                _group = _user.groups[groupId];
                 if (_group.group_id != -1)
                 {
                     Console.WriteLine("Group set properly: " + _group.group_id);
