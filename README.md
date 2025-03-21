@@ -9,6 +9,9 @@ Aplikace má kalendář, do kterého můžou uživatelé ve skupině přidávat 
 ------------------------
 
 K provozu je potřeba mít stažení Newtonsoft.json
+Aplikace komunikuse se server Sharper API - https://sharperserver.onrender.com/docs
+
+Dělaní v .Net 8.0 Maui
 
 Návod na build aplikace:
 Stačí napsat následující příkaz do konzole a aplikace se zhotoví
