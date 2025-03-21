@@ -10,10 +10,17 @@ using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2.Flows;
 using System.Diagnostics;
 using Newtonsoft.Json;
-
+using Microsoft.Maui.Controls.PlatformConfiguration;
+#if ANDROID
+using Android.Content;
+using Android.App;
+using Android.Content.PM;
+#endif
 public partial class LoginPage : ContentPage
 {
-	private string clientId = "973820326914-6nbldai65vlm0gr636l177b47p7ots1e";
+    //983820326914-6nbldai65vlm0gr636l177b47p7ots1e.apps.googleusercontent.com<- Client ID pro Android Auth
+    //983820326914-edhneat20eagehms4vj6vq2448vbet7c.apps.googleusercontent.com <- Client ID pro Web Auth
+    private string clientId = "983820326914-edhneat20eagehms4vj6vq2448vbet7c.apps.googleusercontent.com";
     private GroupData _group;
     private List<SubjectData> _subjects;
     private UserData _user;
@@ -23,9 +30,23 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
     }
 
-	private void OnGoogleLoginClick(object sender, EventArgs e)
+#if ANDROID
+
+    [Activity(NoHistory = true, LaunchMode = LaunchMode.SingleTop, Exported = true)]
+    [IntentFilter(new[] { Intent.ActionView },
+              Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
+              DataScheme = CALLBACK_SCHEME)]
+    public class WebAuthenticationCallbackActivity : Microsoft.Maui.Authentication.WebAuthenticatorCallbackActivity
+    {
+        const string CALLBACK_SCHEME = "myapp";
+
+    }
+#endif
+    private void OnGoogleLoginClick(object sender, EventArgs e)
 	{
-		string userName = "brumbal";
+
+        GetGoogleAccount();
+		/*string userName = "brumbal";
 		string email = "brumbal@gmail.com";
         if (FunctionsLib.RegisterUser(userName, clientId, email) != -1)
         {
@@ -46,15 +67,14 @@ public partial class LoginPage : ContentPage
                 Application.Current.MainPage = new JoinCreatePage();   
             }
 
-        }
-
+        }*/
 	}
 
     public async void GetGoogleAccount() // Prozatím nefunkèní
 	{
 		try
 		{
-            var flow = new ClientSecrets // Pro spojení s OAuth
+            /*var flow = new ClientSecrets // Pro spojení s OAuth
 			{
 				ClientId = clientId
 			};
@@ -73,24 +93,18 @@ public partial class LoginPage : ContentPage
 			});
 			
 			var request = service.Userinfo.Get().ExecuteAsync().Result;
-			await DisplayAlert("Pøihlášení úspìšné", $"Vítej, {request.Name}!", "OK");
+			await DisplayAlert("Pøihlášení úspìšné", $"Vítej, {request.Name}!", "OK");*/
 			
-			/*
-            var authUrl = "https://accounts.google.com/o/oauth2/v2/auth" +
-                      $"?client_id={clientId}.apps.googleusercontent.com" +
-                      $"&redirect_uri=com.googleusercontent.apps.{clientId}:/oauth2redirect" +
-                      "&response_type=code" +
-                      "&scope=email%20profile" +
-                      "&access_type=offline" +
-                      "&code_challenge_method=S256";
+			
+            var authUrl = "https://accounts.google.com/o/oauth2/auth?client_id={clientId}&redirect_uri=com.googleusercontent.apps.{clientId}:/oauth2redirect&response_type=code&scope=email";
 
             var authResult = await WebAuthenticator.AuthenticateAsync(
                 new Uri(authUrl),
-                new Uri($"com.googleusercontent.apps.{clientId}:/oauth2redirect"));
+                new Uri($"myapp://"));
 
             string authCode = authResult.Properties["code"];
 
-            await DisplayAlert("Úspìch", $"Authorization Code: {authCode}", "OK");*/
+            await DisplayAlert("Úspìch", $"Authorization Code: {authCode}", "OK");
 
         }
 		catch (Exception ex)
